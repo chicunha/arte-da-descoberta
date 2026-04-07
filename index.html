@@ -1,0 +1,2204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Arte da Descoberta: Do Aha! ao Rigor Matemático</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg-dark: #0f0f1a;
+    --bg-card: #1a1a2e;
+    --bg-card-hover: #1f1f35;
+    --accent-gold: #f0c040;
+    --accent-blue: #4fc3f7;
+    --accent-green: #66bb6a;
+    --accent-red: #ef5350;
+    --accent-purple: #ab47bc;
+    --accent-orange: #ffa726;
+    --accent-cyan: #26c6da;
+    --text-primary: #e8e8f0;
+    --text-secondary: #a0a0b8;
+    --text-muted: #6a6a80;
+    --border-subtle: rgba(255,255,255,0.08);
+    --glow-gold: rgba(240,192,64,0.15);
+    --glow-blue: rgba(79,195,247,0.15);
+    --glow-green: rgba(102,187,106,0.15);
+    --glow-purple: rgba(171,71,188,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 2rem; position: relative;
+    background: radial-gradient(ellipse at 50% 30%, rgba(240,192,64,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 70%, rgba(79,195,247,0.06) 0%, transparent 50%),
+                var(--bg-dark);
+  }
+  .hero-badge {
+    display: inline-block; padding: 0.4rem 1.2rem; border: 1px solid var(--accent-gold);
+    border-radius: 50px; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--accent-gold); margin-bottom: 2rem; animation: fadeInDown 1s ease;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-weight: 900; line-height: 1.15; margin-bottom: 1.5rem; animation: fadeInUp 1s ease 0.2s both;
+  }
+  .hero h1 .aha { color: var(--accent-gold); }
+  .hero h1 .aha::after { content: '!'; color: var(--accent-red); }
+  .hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.25rem); color: var(--text-secondary);
+    max-width: 700px; margin-bottom: 2rem; animation: fadeInUp 1s ease 0.4s both;
+  }
+  .hero-authors {
+    display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center;
+    animation: fadeInUp 1s ease 0.6s both; margin-bottom: 2rem;
+  }
+  .author-chip {
+    display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 1.2rem;
+    background: var(--bg-card); border: 1px solid var(--border-subtle);
+    border-radius: 50px; font-size: 0.85rem; color: var(--text-secondary); transition: all 0.3s;
+  }
+  .author-chip:hover { border-color: var(--accent-gold); color: var(--text-primary); }
+  .scroll-indicator {
+    position: absolute; bottom: 2rem; animation: bounce 2s infinite;
+    color: var(--text-muted); font-size: 1.5rem; cursor: pointer; text-decoration: none;
+  }
+
+  /* ===== XP BAR ===== */
+  .xp-bar-container {
+    width: 100%; max-width: 500px; margin: 0 auto 1rem;
+    animation: fadeInUp 1s ease 0.8s both;
+  }
+  .xp-label {
+    display: flex; justify-content: space-between; font-size: 0.7rem;
+    color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.4rem;
+  }
+  .xp-bar-bg {
+    height: 8px; background: var(--bg-card); border-radius: 10px; overflow: hidden;
+    border: 1px solid var(--border-subtle);
+  }
+  .xp-bar-fill {
+    height: 100%; width: 0%; border-radius: 10px; transition: width 1s ease;
+    background: linear-gradient(90deg, var(--accent-green), var(--accent-blue), var(--accent-purple));
+  }
+
+  /* ===== LANGUAGE SWITCHER ===== */
+  .lang-switcher {
+    display: flex; gap: 0.3rem; animation: fadeInUp 1s ease 0.7s both;
+  }
+  .lang-btn {
+    padding: 0.3rem 0.7rem; border: 1px solid var(--border-subtle); background: transparent;
+    color: var(--text-muted); border-radius: 6px; font-size: 0.75rem; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-weight: 600; transition: all 0.3s;
+  }
+  .lang-btn.active { background: var(--accent-gold); color: var(--bg-dark); border-color: var(--accent-gold); }
+  .lang-btn:hover:not(.active) { border-color: var(--accent-gold); color: var(--accent-gold); }
+
+  /* ===== NAV ===== */
+  .nav-sticky {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(15,15,26,0.92); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0.8rem 2rem; display: flex; gap: 0.8rem; justify-content: center;
+    flex-wrap: wrap; align-items: center;
+  }
+  .nav-sticky a {
+    color: var(--text-muted); text-decoration: none; font-size: 0.78rem; font-weight: 500;
+    letter-spacing: 1px; text-transform: uppercase; padding: 0.4rem 0.8rem;
+    border-radius: 6px; transition: all 0.3s;
+  }
+  .nav-sticky a:hover { color: var(--accent-gold); background: var(--glow-gold); }
+  .nav-divider { color: var(--text-muted); font-size: 0.6rem; opacity: 0.3; }
+
+  /* Teacher Mode Toggle */
+  .teacher-toggle {
+    display: flex; align-items: center; gap: 0.4rem; margin-left: 1rem;
+    padding: 0.3rem 0.8rem; border: 1px solid var(--accent-purple); border-radius: 50px;
+    background: transparent; color: var(--accent-purple); font-size: 0.72rem;
+    font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .teacher-toggle.active { background: var(--accent-purple); color: #fff; }
+  .teacher-toggle:hover { box-shadow: 0 0 12px var(--glow-purple); }
+
+  /* Teacher Panel (hidden by default) */
+  .teacher-panel {
+    display: none; background: linear-gradient(135deg, rgba(171,71,188,0.08), rgba(171,71,188,0.03));
+    border: 1px solid rgba(171,71,188,0.25); border-radius: 12px; padding: 1.5rem;
+    margin: 1.5rem 0; position: relative;
+  }
+  .teacher-panel::before {
+    content: '👩‍🏫 MODO PROFESSOR'; position: absolute; top: -10px; left: 16px;
+    background: var(--bg-dark); padding: 0 8px; font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 2px; color: var(--accent-purple); text-transform: uppercase;
+  }
+  body.teacher-mode .teacher-panel { display: block; }
+  .teacher-panel h4 { color: var(--accent-purple); font-size: 0.95rem; margin-bottom: 0.6rem; }
+  .teacher-panel p, .teacher-panel li { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.5rem; }
+  .teacher-panel ul { list-style: none; padding-left: 0.8rem; }
+  .teacher-panel ul li::before { content: '▸ '; color: var(--accent-purple); }
+  .teacher-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 1rem; margin-top: 0.8rem; }
+  .teacher-stat {
+    background: rgba(0,0,0,0.2); border-radius: 8px; padding: 0.8rem; text-align: center;
+  }
+  .teacher-stat .val { font-size: 1.4rem; font-weight: 700; color: var(--accent-purple); }
+  .teacher-stat .lbl { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* ===== SECTIONS ===== */
+  .section { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem; }
+  .section-header { margin-bottom: 3rem; }
+  .section-label {
+    display: inline-block; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+    padding: 0.3rem 0.8rem; border-radius: 4px; margin-bottom: 0.8rem; font-weight: 600;
+  }
+  .label-gold { background: var(--glow-gold); color: var(--accent-gold); }
+  .label-blue { background: var(--glow-blue); color: var(--accent-blue); }
+  .label-green { background: var(--glow-green); color: var(--accent-green); }
+  .label-purple { background: var(--glow-purple); color: var(--accent-purple); }
+  .section-title {
+    font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 700; margin-bottom: 0.8rem;
+  }
+  .section-desc { color: var(--text-secondary); font-size: 1.05rem; max-width: 700px; }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--bg-card); border: 1px solid var(--border-subtle);
+    border-radius: 16px; padding: 2rem; margin-bottom: 2rem; transition: all 0.3s;
+  }
+  .card:hover { border-color: rgba(255,255,255,0.12); background: var(--bg-card-hover); }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .card-subtitle { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; }
+  .card p { color: var(--text-secondary); margin-bottom: 1rem; }
+
+  /* ===== POLYA CYCLE ===== */
+  .polya-cycle { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 2rem 0; }
+  .polya-step {
+    background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 12px;
+    padding: 1.5rem; text-align: center; transition: all 0.3s; cursor: default;
+  }
+  .polya-step:hover { transform: translateY(-4px); border-color: var(--accent-gold); box-shadow: 0 8px 30px var(--glow-gold); }
+  .polya-number {
+    width: 40px; height: 40px; background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1.1rem; color: var(--bg-dark); margin: 0 auto 0.8rem;
+  }
+  .polya-step h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .polya-step p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+
+  /* ===== TAO TACTICS ===== */
+  .tao-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 2rem 0; }
+  .tao-tactic {
+    background: var(--bg-card); border: 1px solid var(--border-subtle);
+    border-left: 3px solid var(--accent-blue); border-radius: 0 12px 12px 0;
+    padding: 1.2rem 1.5rem; transition: all 0.3s;
+  }
+  .tao-tactic:hover { border-left-color: var(--accent-purple); background: var(--bg-card-hover); }
+  .tao-tactic h4 { font-size: 0.9rem; font-weight: 600; color: var(--accent-blue); margin-bottom: 0.4rem; }
+  .tao-tactic p { font-size: 0.82rem; color: var(--text-muted); }
+
+  /* ===== CHALLENGE BLOCK ===== */
+  .challenge-block {
+    background: linear-gradient(135deg, rgba(240,192,64,0.05), rgba(79,195,247,0.03));
+    border: 1px solid rgba(240,192,64,0.2); border-radius: 16px; padding: 2rem;
+    margin: 2rem 0; position: relative;
+  }
+  .challenge-icon { position: absolute; top: -15px; left: 20px; background: var(--bg-dark); padding: 0 0.8rem; font-size: 1.5rem; }
+  .challenge-block h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--accent-gold); margin-bottom: 1rem; }
+  .challenge-block .problem-text {
+    color: var(--text-primary); font-size: 1rem; line-height: 1.8; padding: 1.2rem;
+    background: rgba(0,0,0,0.2); border-radius: 10px; border-left: 3px solid var(--accent-gold);
+    margin-bottom: 1rem;
+  }
+
+  /* ===== TRY IT YOURSELF (NEW) ===== */
+  .try-it-section {
+    background: rgba(102,187,106,0.05); border: 1px dashed rgba(102,187,106,0.3);
+    border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0;
+  }
+  .try-it-section h4 { color: var(--accent-green); font-size: 0.95rem; margin-bottom: 0.8rem; }
+  .try-it-section p { color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 0.8rem; }
+  .try-textarea {
+    width: 100%; min-height: 100px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle);
+    border-radius: 8px; padding: 1rem; color: var(--text-primary); font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem; resize: vertical; line-height: 1.6;
+  }
+  .try-textarea:focus { outline: none; border-color: var(--accent-green); }
+  .try-textarea::placeholder { color: var(--text-muted); }
+  .try-actions { display: flex; gap: 0.8rem; margin-top: 0.8rem; flex-wrap: wrap; align-items: center; }
+
+  /* Timer */
+  .timer-display {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+    color: var(--accent-cyan); padding: 0.4rem 0.8rem;
+    background: rgba(0,0,0,0.3); border-radius: 6px;
+  }
+
+  /* ===== BUTTONS ===== */
+  .hint-btn, .action-btn {
+    display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem;
+    border: none; border-radius: 50px; font-size: 0.82rem; font-weight: 600;
+    cursor: pointer; transition: all 0.3s; font-family: 'Inter', sans-serif;
+  }
+  .hint-btn {
+    background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+    color: var(--bg-dark); margin: 0.5rem 0;
+  }
+  .hint-btn:hover { transform: scale(1.05); box-shadow: 0 4px 20px var(--glow-gold); }
+  .action-btn-green { background: var(--accent-green); color: var(--bg-dark); }
+  .action-btn-blue { background: var(--accent-blue); color: var(--bg-dark); }
+  .action-btn-red { background: rgba(239,83,80,0.15); color: var(--accent-red); border: 1px solid rgba(239,83,80,0.3); }
+  .action-btn-green:hover { box-shadow: 0 4px 20px var(--glow-green); }
+  .action-btn-blue:hover { box-shadow: 0 4px 20px var(--glow-blue); }
+
+  .check-btn {
+    padding: 0.5rem 1rem; background: var(--accent-green); color: var(--bg-dark);
+    border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-size: 0.82rem; transition: all 0.3s;
+  }
+  .check-btn:hover { box-shadow: 0 4px 20px var(--glow-green); transform: scale(1.03); }
+
+  /* Hint Popup */
+  .hint-popup {
+    display: none; background: var(--bg-card); border: 1px solid var(--accent-gold);
+    border-radius: 12px; padding: 1.2rem 1.5rem; margin: 1rem 0;
+    color: var(--accent-gold); font-style: italic; font-size: 0.95rem; animation: fadeIn 0.4s ease;
+  }
+  .hint-popup.active { display: block; }
+
+  /* ===== TABS ===== */
+  .solution-tabs { margin: 1.5rem 0; }
+  .tab-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .tab-btn {
+    padding: 0.7rem 1.2rem; background: var(--bg-card); border: 1px solid var(--border-subtle);
+    border-bottom: none; border-radius: 10px 10px 0 0; color: var(--text-muted);
+    font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.3s;
+    font-family: 'Inter', sans-serif;
+  }
+  .tab-btn:hover { color: var(--text-primary); }
+  .tab-btn.active { background: var(--bg-card-hover); color: var(--accent-gold); border-color: var(--accent-gold); }
+  .tab-content {
+    display: none; background: var(--bg-card-hover); border: 1px solid var(--border-subtle);
+    border-radius: 0 12px 12px 12px; padding: 2rem; animation: fadeIn 0.4s ease;
+  }
+  .tab-content.active { display: block; }
+  .tab-content h4 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 0.8rem; }
+  .tab-content p, .tab-content li { color: var(--text-secondary); margin-bottom: 0.8rem; font-size: 0.92rem; }
+  .tab-content ul { padding-left: 1.2rem; list-style: none; }
+  .tab-content ul li::before { content: '▸ '; color: var(--accent-gold); }
+
+  /* ===== MATH BLOCKS ===== */
+  .math-block {
+    background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: 10px;
+    padding: 1.2rem 1.5rem; margin: 1rem 0; font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem; color: var(--accent-blue); overflow-x: auto; line-height: 1.8;
+  }
+  .math-block .comment { color: var(--text-muted); font-style: italic; }
+  .math-block .highlight { color: var(--accent-gold); font-weight: 600; }
+  .math-block .result { color: var(--accent-green); font-weight: 600; }
+  .math-block .impossible { color: var(--accent-red); font-weight: 600; }
+
+  /* ===== INTERACTIVE BOARDS ===== */
+  .mini-board {
+    display: inline-grid; grid-template-columns: repeat(8, 28px); grid-template-rows: repeat(8, 28px);
+    gap: 1px; margin: 1rem auto; border-radius: 6px; overflow: hidden;
+  }
+  .mini-board .cell { width: 28px; height: 28px; transition: all 0.2s; }
+  .cell-light { background: #e8d5b5; }
+  .cell-dark { background: #8b6f47; }
+  .cell-removed { background: var(--accent-red); opacity: 0.5; }
+  .cell-domino-a { background: var(--accent-blue) !important; opacity: 0.8; }
+  .cell-domino-b { background: var(--accent-purple) !important; opacity: 0.8; }
+  .board-interactive .cell { cursor: pointer; }
+  .board-interactive .cell:hover:not(.cell-removed):not(.cell-domino-a):not(.cell-domino-b) {
+    outline: 2px solid var(--accent-gold); outline-offset: -2px;
+  }
+
+  /* Domino placement counter */
+  .board-status {
+    font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; text-align: center;
+  }
+  .board-status strong { color: var(--accent-blue); }
+
+  /* Chameleon Visual */
+  .chameleon-visual { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin: 1.5rem 0; }
+  .cham-group {
+    text-align: center; padding: 1rem 1.5rem; background: var(--bg-card);
+    border-radius: 12px; border: 1px solid var(--border-subtle); min-width: 100px;
+  }
+  .cham-group .count { font-size: 2rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .cham-group .label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; margin-top: 0.3rem; color: var(--text-muted); }
+  .cham-gray .count { color: #9e9e9e; }
+  .cham-brown .count { color: #8d6e63; }
+  .cham-red .count { color: var(--accent-red); }
+
+  /* Chameleon Simulator */
+  .cham-sim { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin-top: 1rem; }
+  .cham-sim-btn {
+    padding: 0.4rem 0.8rem; border-radius: 6px; border: 1px solid var(--border-subtle);
+    background: var(--bg-card); color: var(--text-secondary); font-size: 0.78rem;
+    cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;
+  }
+  .cham-sim-btn:hover { border-color: var(--accent-gold); color: var(--text-primary); }
+
+  /* Hotel Visual */
+  .hotel-visual {
+    display: flex; gap: 0.3rem; flex-wrap: wrap; justify-content: center; margin: 1rem 0;
+    padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 10px;
+  }
+  .hotel-room {
+    width: 36px; height: 36px; background: var(--bg-card); border: 1px solid var(--border-subtle);
+    border-radius: 4px; display: flex; align-items: center; justify-content: center;
+    font-size: 0.65rem; font-family: 'JetBrains Mono', monospace;
+    color: var(--text-muted); transition: all 0.5s;
+  }
+  .hotel-room.occupied { background: var(--accent-blue); color: var(--bg-dark); border-color: var(--accent-blue); }
+  .hotel-room.new-guest { background: var(--accent-gold); color: var(--bg-dark); border-color: var(--accent-gold); }
+  .hotel-room.freed { background: rgba(102,187,106,0.2); border-color: var(--accent-green); color: var(--accent-green); }
+  .hotel-room.dots { background: transparent; border: none; color: var(--text-muted); font-size: 1.2rem; width: auto; }
+  .hotel-controls { display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.8rem; flex-wrap: wrap; }
+
+  /* Chocolate Grid (Interactive) */
+  .choco-wrapper { text-align: center; margin: 1.5rem 0; }
+  .choco-grid {
+    display: inline-grid; gap: 2px; margin: 0.5rem auto;
+    background: #3e2723; padding: 4px; border-radius: 8px;
+  }
+  .choco-cell {
+    width: 24px; height: 24px; background: linear-gradient(135deg, #6d4c41, #5d4037);
+    border-radius: 3px; transition: all 0.3s; cursor: pointer;
+  }
+  .choco-cell:hover { background: linear-gradient(135deg, #8d6e63, #795548); }
+  .choco-cell.broken { background: transparent; cursor: default; }
+  .choco-status { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem; }
+  .choco-status strong { color: var(--accent-gold); }
+
+  /* 9 Dots Canvas */
+  .dots-canvas-wrap { text-align: center; margin: 1.5rem 0; }
+  .dots-canvas {
+    background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: 12px;
+    cursor: crosshair; display: inline-block;
+  }
+
+  /* Monty Hall Doors */
+  .monty-hall-game { text-align: center; margin: 1.5rem 0; }
+  .doors-container { display: flex; gap: 1.5rem; justify-content: center; margin: 1rem 0; flex-wrap: wrap; }
+  .door {
+    width: 100px; height: 150px; background: linear-gradient(180deg, #5d4037, #3e2723);
+    border: 2px solid #8d6e63; border-radius: 8px; cursor: pointer; transition: all 0.4s;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .door:hover { border-color: var(--accent-gold); transform: scale(1.05); }
+  .door .door-number { font-size: 1.5rem; font-weight: 700; color: var(--accent-gold); }
+  .door .door-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
+  .door.opened { border-color: var(--accent-red); cursor: default; }
+  .door.opened .door-content { display: block; }
+  .door .door-content {
+    display: none; position: absolute; inset: 0;
+    background: rgba(0,0,0,0.85); align-items: center; justify-content: center;
+    font-size: 2.5rem; display: none; flex-direction: column;
+  }
+  .door.opened .door-content { display: flex; }
+  .door.winner { border-color: var(--accent-green); }
+  .monty-stats {
+    display: flex; gap: 2rem; justify-content: center; margin-top: 1rem;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+  }
+  .monty-stats .stat-val { font-size: 1.3rem; font-weight: 700; }
+  .monty-stats .stat-lbl { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; }
+
+  /* Bridges SVG */
+  .bridges-wrap { text-align: center; margin: 1.5rem 0; }
+
+  /* ===== LEVEL BADGES ===== */
+  .level-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem;
+    border-radius: 8px; font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .level-1 { background: rgba(102,187,106,0.15); color: var(--accent-green); border: 1px solid rgba(102,187,106,0.3); }
+  .level-2 { background: rgba(79,195,247,0.15); color: var(--accent-blue); border: 1px solid rgba(79,195,247,0.3); }
+  .level-3 { background: rgba(171,71,188,0.15); color: var(--accent-purple); border: 1px solid rgba(171,71,188,0.3); }
+  .level-4 { background: rgba(255,167,38,0.15); color: var(--accent-orange); border: 1px solid rgba(255,167,38,0.3); }
+
+  /* ===== FOCUS BOXES ===== */
+  .focus-box { padding: 1rem 1.5rem; border-radius: 10px; margin: 1rem 0; font-size: 0.9rem; }
+  .focus-pedagogy { background: rgba(171,71,188,0.08); border: 1px solid rgba(171,71,188,0.2); color: var(--accent-purple); }
+  .focus-insight { background: rgba(240,192,64,0.08); border: 1px solid rgba(240,192,64,0.2); color: var(--accent-gold); }
+  .focus-impossible { background: rgba(239,83,80,0.08); border: 1px solid rgba(239,83,80,0.2); color: var(--accent-red); }
+
+  /* ===== RETROSPECT ===== */
+  .retrospect {
+    background: linear-gradient(135deg, rgba(102,187,106,0.05), rgba(102,187,106,0.02));
+    border: 1px solid rgba(102,187,106,0.2); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0;
+  }
+  .retrospect h4 { color: var(--accent-green); font-size: 0.95rem; margin-bottom: 0.5rem; }
+  .retrospect p { color: var(--text-secondary); font-size: 0.88rem; }
+
+  /* ===== QUOTE ===== */
+  .quote-block {
+    border-left: 3px solid var(--accent-gold); padding: 1rem 1.5rem; margin: 1.5rem 0;
+    font-style: italic; color: var(--text-secondary);
+  }
+  .quote-block .author { display: block; margin-top: 0.5rem; font-style: normal; font-weight: 600; color: var(--accent-gold); font-size: 0.85rem; }
+
+  /* ===== DIVIDER ===== */
+  .divider { height: 1px; background: linear-gradient(to right, transparent, var(--border-subtle), transparent); margin: 3rem 0; }
+
+  /* ===== CONFETTI ===== */
+  .confetti-piece {
+    position: fixed; z-index: 9999; pointer-events: none; animation: confetti-fall 2.5s ease-in forwards;
+  }
+  @keyframes confetti-fall {
+    0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+    100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
+  }
+
+  /* ===== ANSWER INPUT ===== */
+  .answer-input-group { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin-top: 0.8rem; }
+  .answer-input {
+    padding: 0.5rem 1rem; background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle);
+    border-radius: 8px; color: var(--text-primary); font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem; width: 200px;
+  }
+  .answer-input:focus { outline: none; border-color: var(--accent-blue); }
+  .answer-feedback {
+    font-size: 0.85rem; padding: 0.3rem 0.8rem; border-radius: 6px; display: none; font-weight: 600;
+  }
+  .answer-feedback.correct { display: inline-block; background: var(--glow-green); color: var(--accent-green); }
+  .answer-feedback.wrong { display: inline-block; background: rgba(239,83,80,0.15); color: var(--accent-red); }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    text-align: center; padding: 3rem 2rem; color: var(--text-muted); font-size: 0.8rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .footer .footer-quote {
+    font-family: 'Playfair Display', serif; font-size: 1.1rem; font-style: italic;
+    color: var(--text-secondary); margin-bottom: 1rem; max-width: 600px; margin-left: auto; margin-right: auto;
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 600px) {
+    .polya-cycle { grid-template-columns: 1fr 1fr; }
+    .tao-grid { grid-template-columns: 1fr; }
+    .tab-buttons { flex-direction: column; }
+    .tab-btn { border-radius: 8px; border-bottom: 1px solid var(--border-subtle); }
+    .mini-board { grid-template-columns: repeat(8, 22px); grid-template-rows: repeat(8, 22px); }
+    .mini-board .cell { width: 22px; height: 22px; }
+    .section { padding: 2.5rem 1rem; }
+    .hero-authors { flex-direction: column; align-items: center; }
+    .chameleon-visual { flex-direction: column; align-items: center; }
+    .doors-container { gap: 0.8rem; }
+    .door { width: 80px; height: 120px; }
+    .teacher-toggle { margin-left: 0; margin-top: 0.3rem; }
+    .nav-sticky { padding: 0.6rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- HERO -->
+<!-- ============================================ -->
+<section class="hero" id="topo">
+  <div class="hero-badge" data-i18n="hero-badge">Uma jornada interativa pela matemática</div>
+  <h1>
+    <span data-i18n="hero-title-1">A Arte da Descoberta:</span><br>
+    <span data-i18n="hero-title-2">Do </span><span class="aha">Aha</span><span data-i18n="hero-title-3"> ao Rigor Matemático</span>
+  </h1>
+  <p class="hero-subtitle" data-i18n="hero-subtitle">
+    Quebra-cabeças que despertam a intuição criativa, resolvidos com o método rigoroso de quem sabe que toda grande prova começa com um lampejo de curiosidade.
+  </p>
+
+  <div class="hero-authors">
+    <div class="author-chip"><span class="icon">&#128270;</span> Martin Gardner — <span data-i18n="author-puzzles">Os Enigmas</span></div>
+    <div class="author-chip"><span class="icon">&#128295;</span> George Pólya — <span data-i18n="author-method">O Método</span></div>
+    <div class="author-chip"><span class="icon">⚡</span> Terence Tao — <span data-i18n="author-tactics">As Táticas</span></div>
+  </div>
+
+  <!-- XP Bar -->
+  <div class="xp-bar-container">
+    <div class="xp-label">
+      <span data-i18n="xp-label">Progresso da Jornada</span>
+      <span id="xpText">0 / 9 desafios</span>
+    </div>
+    <div class="xp-bar-bg"><div class="xp-bar-fill" id="xpBarFill"></div></div>
+  </div>
+
+  <!-- Language Switcher -->
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('pt')">PT</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+
+  <a href="#intro" class="scroll-indicator">⌄</a>
+</section>
+
+<!-- ============================================ -->
+<!-- NAVIGATION -->
+<!-- ============================================ -->
+<nav class="nav-sticky">
+  <a href="#intro" data-i18n="nav-tools">Caixa de Ferramentas</a>
+  <span class="nav-divider">|</span>
+  <a href="#nivel1" data-i18n="nav-level1">Nível 1</a>
+  <a href="#nivel2" data-i18n="nav-level2">Nível 2</a>
+  <a href="#nivel3" data-i18n="nav-level3">Nível 3</a>
+  <a href="#nivel4" data-i18n="nav-level4">Nível 4</a>
+  <span class="nav-divider">|</span>
+  <button class="teacher-toggle" id="teacherToggle" onclick="toggleTeacherMode()">
+    👩‍🏫 <span data-i18n="teacher-btn">Professor</span>
+  </button>
+</nav>
+
+<!-- ============================================ -->
+<!-- SEÇÃO 0: INTRODUÇÃO -->
+<!-- ============================================ -->
+<section class="section" id="intro">
+  <div class="section-header">
+    <div class="section-label label-gold" data-i18n="label-foundations">Fundamentos</div>
+    <h2 class="section-title">📦 <span data-i18n="intro-title">A Caixa de Ferramentas do Solucionador</span></h2>
+    <p class="section-desc" data-i18n="intro-desc">
+      Antes de enfrentar qualquer desafio, um bom detetive prepara seus instrumentos. Aqui, você vai conhecer a filosofia, o método e as táticas que transformam confusão em clareza.
+    </p>
+  </div>
+
+  <!-- Teacher Panel: Intro -->
+  <div class="teacher-panel">
+    <h4>Plano de Aula — Seção Introdutória</h4>
+    <div class="teacher-grid">
+      <div class="teacher-stat"><div class="val">20 min</div><div class="lbl">Tempo sugerido</div></div>
+      <div class="teacher-stat"><div class="val">Todos</div><div class="lbl">Nível dos alunos</div></div>
+      <div class="teacher-stat"><div class="val">Nenhum</div><div class="lbl">Pré-requisitos</div></div>
+    </div>
+    <h4 style="margin-top:1rem;">Objetivos de Aprendizagem</h4>
+    <ul>
+      <li>Compreender que resolver problemas combina intuição criativa ("Aha!") com raciocínio lógico.</li>
+      <li>Memorizar e aplicar as 4 fases do Método de Pólya.</li>
+      <li>Identificar ao menos 3 táticas de Tao e saber quando usá-las.</li>
+    </ul>
+    <h4>Perguntas para Discussão</h4>
+    <ul>
+      <li>"Vocês já tiveram um momento 'Eureka' resolvendo algo? O que sentiram?"</li>
+      <li>"Qual dessas 4 fases vocês costumam pular quando resolvem problemas?"</li>
+      <li>"Por que o 'Retrospecto' (Fase 4) é tão importante e tão ignorado?"</li>
+    </ul>
+    <h4>Equívocos Comuns a Abordar</h4>
+    <ul>
+      <li>Mito: "Matemática é sobre ter talento nato." — Desmistificar com a história de Pólya.</li>
+      <li>Mito: "Intuição é o oposto de rigor." — Mostrar que são complementares.</li>
+    </ul>
+  </div>
+
+  <!-- A FILOSOFIA -->
+  <div class="card">
+    <div class="card-subtitle" data-i18n="philosophy-label">A Filosofia</div>
+    <div class="card-title" data-i18n="philosophy-title">O Salto Criativo + A Lógica Inabalável</div>
+    <p data-i18n="philosophy-p1">
+      Resolver problemas não é apenas aplicar fórmulas mecanicamente. Existe um momento mágico — o instante <strong style="color:var(--accent-gold);">"Aha!"</strong> — em que sua mente percebe um atalho, uma conexão oculta, uma simetria escondida. Os psicólogos chamam esse lampejo de <em>insight</em>.
+    </p>
+    <p data-i18n="philosophy-p2">
+      Porém, a intuição sozinha não basta. Depois que a centelha surge, precisamos testá-la, formalizá-la e prová-la com rigor. Nosso caminho será sempre: <strong>Explorar com curiosidade ➤ Ter o insight ➤ Provar com rigor</strong>.
+    </p>
+    <div class="quote-block">
+      <span data-i18n="quote-heuristic">"A heurística tem razões que a própria demonstração rigorosa desconhece."</span>
+      <span class="author">— Inspiração livre de Pólya e Gardner</span>
+    </div>
+  </div>
+
+  <!-- O MÉTODO DE PÓLYA -->
+  <div class="card">
+    <div class="card-subtitle" data-i18n="polya-label">O Método de Pólya</div>
+    <div class="card-title">🔄 <span data-i18n="polya-title">As 4 Fases para Resolver Qualquer Problema</span></div>
+    <p data-i18n="polya-desc">
+      George Pólya, professor em Stanford, destilou décadas de experiência no ensino de matemática em um ciclo universal. Pense nele como uma bússola: não importa quão perdido você esteja, estas quatro perguntas sempre apontam o norte.
+    </p>
+    <div class="polya-cycle">
+      <div class="polya-step">
+        <div class="polya-number">1</div>
+        <h4 data-i18n="polya-s1-title">Compreensão</h4>
+        <p data-i18n="polya-s1-desc">Qual é a incógnita? Quais são os dados? Qual é a condicionante? Separe tudo com cuidado.</p>
+      </div>
+      <div class="polya-step">
+        <div class="polya-number">2</div>
+        <h4 data-i18n="polya-s2-title">Plano</h4>
+        <p data-i18n="polya-s2-desc">Já viu algo parecido? Pode reformular? Existe um elemento auxiliar que ajude?</p>
+      </div>
+      <div class="polya-step">
+        <div class="polya-number">3</div>
+        <h4 data-i18n="polya-s3-title">Execução</h4>
+        <p data-i18n="polya-s3-desc">Execute cada passo e verifique. O raciocínio está correto? Consegue demonstrar?</p>
+      </div>
+      <div class="polya-step">
+        <div class="polya-number">4</div>
+        <h4 data-i18n="polya-s4-title">Retrospecto</h4>
+        <p data-i18n="polya-s4-desc">É possível verificar o resultado? Usar outro caminho? Aplicar a outros problemas?</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AS TÁTICAS DE TAO -->
+  <div class="card">
+    <div class="card-subtitle" data-i18n="tao-label">As Táticas de Tao</div>
+    <div class="card-title">⚡ <span data-i18n="tao-title">Estratégias Cruciais do Arsenal de Terence Tao</span></div>
+    <p data-i18n="tao-desc">
+      Terence Tao, ganhador da Medalha Fields, ensina que além do método geral, existem <em>táticas específicas</em> — truques de ofício que um solucionador experiente aplica quase por reflexo.
+    </p>
+    <div class="tao-grid">
+      <div class="tao-tactic"><h4>✎ Notação Simétrica</h4><p>Escolha símbolos que reflitam a estrutura do problema. Uma boa notação já é meia solução.</p></div>
+      <div class="tao-tactic"><h4>🔍 Simplificar o Problema</h4><p>Teste com números menores, casos extremos, versões reduzidas. Encontre o padrão no simples.</p></div>
+      <div class="tao-tactic"><h4>🎯 Metas Táticas</h4><p>Divida a prova em sub-objetivos. "Se eu provar X, então Y fica fácil."</p></div>
+      <div class="tao-tactic"><h4>🔀 Modificar Radicalmente</h4><p>Mude a perspectiva: colorir, renomear, inverter. Às vezes a solução está no avesso do problema.</p></div>
+      <div class="tao-tactic"><h4>🔐 Buscar Invariantes</h4><p>O que <em>nunca muda</em> em cada transformação? Invariantes são como impressões digitais do problema.</p></div>
+      <div class="tao-tactic"><h4>🤔 Contra-exemplos</h4><p>Antes de provar, tente refutar. Se não consegue, talvez esteja no caminho certo.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================ -->
+<!-- NÍVEL 1: O DESPERTAR DA INTUIÇÃO -->
+<!-- ============================================ -->
+<section class="section" id="nivel1">
+  <div class="section-header">
+    <div class="level-badge level-1">🌱 Nível 1 — Iniciante</div>
+    <h2 class="section-title" data-i18n="n1-title">O Despertar da Intuição</h2>
+    <p class="section-desc" data-i18n="n1-desc">Problemas que parecem simples, mas escondem armadilhas na linguagem. O objetivo aqui é aprender a separar dados, incógnitas e condições — a Fase 1 de Pólya.</p>
+  </div>
+
+  <div class="focus-box focus-pedagogy">
+    🎓 <strong>Foco Pedagógico:</strong> Familiarização com o problema e separação clara de dados e incógnitas. Aprender a não confiar cegamente na formulação verbal.
+  </div>
+
+  <!-- Teacher Panel: Nivel 1 -->
+  <div class="teacher-panel">
+    <h4>Plano de Aula — Nível 1</h4>
+    <div class="teacher-grid">
+      <div class="teacher-stat"><div class="val">30 min</div><div class="lbl">Tempo sugerido</div></div>
+      <div class="teacher-stat"><div class="val">6º–8º ano</div><div class="lbl">Público ideal</div></div>
+      <div class="teacher-stat"><div class="val">Aritmética básica</div><div class="lbl">Pré-requisitos</div></div>
+    </div>
+    <h4 style="margin-top:1rem;">Objetivos de Aprendizagem</h4>
+    <ul>
+      <li>Identificar dados, incógnitas e condicionantes em problemas verbais.</li>
+      <li>Reconhecer falácias aritméticas comuns (soma de taxas).</li>
+      <li>Praticar pensamento lateral com os 9 pontos.</li>
+    </ul>
+    <h4>Atividade Sugerida</h4>
+    <p>Divida a turma em duplas. Cada dupla tenta resolver o Desafio 1 sem ver a resposta. Depois de 5 minutos, peça que compartilhem o que descobriram. Use a "Dica de Pólya" como scaffolding para os que travaram.</p>
+  </div>
+
+  <!-- DESAFIO 1: O DÓLAR DESAPARECIDO -->
+  <div class="challenge-block" id="challenge1">
+    <div class="challenge-icon">💡</div>
+    <h3>Desafio 1: O Dólar Desaparecido</h3>
+    <div class="problem-text">
+      <strong>O Cenário:</strong> Uma loja tem 60 discos em promoção. Metade (30 discos) custa <strong>2 por $1</strong> e a outra metade (30 discos) custa <strong>3 por $1</strong>.<br><br>
+      <strong>Vendendo separadamente:</strong> Os 30 discos a 2/$1 rendem $15. Os 30 discos a 3/$1 rendem $10. Total: <strong>$25</strong>.<br><br>
+      <strong>A "simplificação":</strong> Um funcionário raciocina: "2 por $1 mais 3 por $1 dá 5 por $2, certo?" E vende todos os 60 discos a <strong>5 por $2</strong>, arrecadando 60 ÷ 5 × 2 = <strong>$24</strong>.<br><br>
+      🚨 <strong>Para onde foi o dólar que sumiu?</strong>
+    </div>
+
+    <!-- TRY IT YOURSELF -->
+    <div class="try-it-section">
+      <h4>✏️ Tente Resolver! (antes de ver a resposta)</h4>
+      <p>Escreva abaixo seu raciocínio. Não tenha medo de errar — o rascunho é parte do processo!</p>
+      <textarea class="try-textarea" placeholder="Meu raciocínio: O dólar sumiu porque..."></textarea>
+      <div class="try-actions">
+        <span class="timer-display" id="timer1">⏱ 00:00</span>
+        <button class="check-btn" onclick="startTimer('timer1')">Iniciar Timer</button>
+      </div>
+    </div>
+
+    <button class="hint-btn" onclick="toggleHint('hint1')">🔍 Dica de Pólya</button>
+    <div class="hint-popup" id="hint1">
+      "Qual é a condicionante? Os dados cobrem tudo? — As <em>taxas</em> de preço são diferentes. Você pode somar preços unitários diferentes e tratar como uma média?"
+    </div>
+
+    <div class="solution-tabs">
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="openTab(event, 'c1t1')"><span class="tab-icon">⚔</span> A Batalha Inicial</button>
+        <button class="tab-btn" onclick="openTab(event, 'c1t2')"><span class="tab-icon">💡</span> O Insight Aha!</button>
+        <button class="tab-btn" onclick="openTab(event, 'c1t3')"><span class="tab-icon">📓</span> A Prova Rigorosa</button>
+      </div>
+      <div class="tab-content active" id="c1t1">
+        <h4>⚔ A Batalha Inicial — Examinando os Dados</h4>
+        <p>Vamos aplicar o <strong>Passo 1 de Pólya</strong>: Compreender o problema. O detetive pega sua lupa e examina cada pista antes de acusar alguém.</p>
+        <ul>
+          <li><strong>Dado 1:</strong> 30 discos a 2 por $1. Preço unitário = $0,50 cada.</li>
+          <li><strong>Dado 2:</strong> 30 discos a 3 por $1. Preço unitário = $0,3333... cada.</li>
+          <li><strong>Pergunta crítica:</strong> O preço unitário médio é realmente $0,40 (que é o que "5 por $2" implica)?</li>
+        </ul>
+        <p>Tente calcular: qual seria a média ponderada correta dos preços, considerando que há a <em>mesma quantidade</em> de discos em cada grupo?</p>
+      </div>
+      <div class="tab-content" id="c1t2">
+        <h4>💡 O Insight Aha! — Taxas Não se Somam!</h4>
+        <div class="focus-box focus-insight">
+          A centelha: <strong>"2 por $1" + "3 por $1" não é "5 por $2"!</strong> Você não pode somar razões com denominadores diferentes como se fossem frações comuns. A média de $0,50 e $0,33... não é $0,40 — é $0,4166...
+        </div>
+        <p>O erro é tratar uma <strong>média harmônica</strong> como se fosse uma <strong>média aritmética</strong>. A linguagem coloquial nos faz agregar taxas incompatíveis.</p>
+      </div>
+      <div class="tab-content" id="c1t3">
+        <h4>📓 A Prova Rigorosa — Separando as Taxas</h4>
+        <p>Seguindo a tática de Tao de usar <strong>notação simétrica</strong>:</p>
+        <div class="math-block">
+          <span class="comment">/* Definições */</span><br>
+          Grupo A: 30 discos × $0,50/disco = <span class="highlight">$15,00</span><br>
+          Grupo B: 30 discos × $0,3333.../disco = <span class="highlight">$10,00</span><br>
+          Total correto = $15 + $10 = <span class="result">$25,00</span><br><br>
+          <span class="comment">/* O cálculo errado */</span><br>
+          "5 por $2" implica preço unitário = $2/5 = $0,40/disco<br>
+          60 discos × $0,40 = <span class="impossible">$24,00</span><br><br>
+          <span class="comment">/* A diferença */</span><br>
+          Preço médio real = ($0,50 + $0,3333...)/2 = $0,41666...<br>
+          60 × $0,41666... = <span class="result">$25,00</span> ✓<br><br>
+          O dólar "desapareceu" na diferença: 60 × ($0,41666... − $0,40) = <span class="result">$1,00</span>
+        </div>
+        <div class="retrospect">
+          <h4>📍 Retrospecto (Fase 4 de Pólya)</h4>
+          <p>A lição transcende os discos: sempre que alguém combinar <em>taxas</em>, verifique se a média está sendo calculada corretamente. Taxas com bases diferentes exigem média ponderada, não soma simples.</p>
+        </div>
+        <button class="check-btn" onclick="completeChallenge(1)" style="margin-top:1rem;">✅ Entendi! Marcar como concluído</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESAFIO 2 (NOVO): OS 9 PONTOS -->
+  <div class="challenge-block" id="challenge2">
+    <div class="challenge-icon">✏️</div>
+    <h3>Desafio 2: Os 9 Pontos — Pense Fora da Caixa</h3>
+    <div class="problem-text">
+      Nove pontos estão dispostos em um quadrado 3×3. Sua missão: <strong>conecte todos os 9 pontos usando no máximo 4 linhas retas</strong>, sem tirar a caneta do papel (cada linha começa onde a anterior terminou).<br><br>
+      🎯 <strong>É possível? Tente no quadro abaixo!</strong>
+    </div>
+
+    <!-- INTERACTIVE 9 DOTS CANVAS -->
+    <div class="dots-canvas-wrap">
+      <canvas class="dots-canvas" id="dotsCanvas" width="280" height="280"></canvas>
+      <br>
+      <div class="try-actions" style="justify-content:center; margin-top:0.5rem;">
+        <button class="action-btn action-btn-red" onclick="resetDots()">🗑 Limpar</button>
+        <button class="action-btn hint-btn" onclick="showDotsSolution()">👁 Ver Solução</button>
+        <span class="board-status" id="dotsStatus">Linhas: <strong>0</strong>/4 — Pontos: <strong>0</strong>/9</span>
+      </div>
+    </div>
+
+    <div class="try-it-section">
+      <h4>✏️ Reflexão</h4>
+      <p>Por que a maioria das pessoas falha neste problema? Escreva sua hipótese:</p>
+      <textarea class="try-textarea" placeholder="Acho que as pessoas falham porque..."></textarea>
+    </div>
+
+    <button class="hint-btn" onclick="toggleHint('hint2')">🔍 Dica de Pólya</button>
+    <div class="hint-popup" id="hint2">
+      "Você está impondo alguma <em>restrição extra</em> que o problema não pede? Releia o enunciado. Ele diz que as linhas precisam ficar dentro do quadrado?"
+    </div>
+
+    <div class="solution-tabs">
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="openTab(event, 'c2t1')"><span class="tab-icon">⚔</span> A Batalha Inicial</button>
+        <button class="tab-btn" onclick="openTab(event, 'c2t2')"><span class="tab-icon">💡</span> O Insight Aha!</button>
+        <button class="tab-btn" onclick="openTab(event, 'c2t3')"><span class="tab-icon">📓</span> A Prova Rigorosa</button>
+      </div>
+      <div class="tab-content active" id="c2t1">
+        <h4>⚔ A Batalha Inicial — A Prisão Invisível</h4>
+        <p>A maioria tenta manter as linhas <em>dentro</em> do quadrado formado pelos 9 pontos. Mas quem disse que é proibido sair?</p>
+        <ul>
+          <li>Se ficar "dentro da caixa", precisaria de pelo menos 5 linhas.</li>
+          <li>Pólya pergunta: "Qual é a condicionante?" — O problema diz apenas "linhas retas" e "sem tirar a caneta".</li>
+          <li>A restrição de ficar dentro do quadrado é <em>auto-imposta</em>!</li>
+        </ul>
+      </div>
+      <div class="tab-content" id="c2t2">
+        <h4>💡 O Insight Aha! — Saia da Caixa!</h4>
+        <div class="focus-box focus-insight">
+          A centelha: As linhas podem se <strong>estender além dos pontos</strong>! A expressão "pensar fora da caixa" nasceu literalmente deste problema. Ao prolongar as linhas para fora do quadrado imaginário, você consegue atingir todos os 9 pontos com exatamente 4 segmentos.
+        </div>
+        <p>A solução forma um padrão de seta/triângulo que vai além dos limites do quadrado 3×3.</p>
+      </div>
+      <div class="tab-content" id="c2t3">
+        <h4>📓 A Prova Rigorosa — Por Que 4 e Não Menos?</h4>
+        <div class="math-block">
+          <span class="comment">/* Limite inferior: por que não dá com 3 linhas? */</span><br>
+          Cada linha reta passa por no máximo 3 dos 9 pontos<br>
+          (pois os pontos formam um grid 3×3).<br>
+          3 linhas × 3 pontos/linha = 9 no máximo, MAS:<br>
+          Precisamos que cada linha <span class="highlight">comece onde a anterior termina</span>.<br>
+          Isso cria restrições de conectividade que impedem cobrir<br>
+          todos os 9 pontos com apenas 3 segmentos conectados.<br><br>
+          <span class="comment">/* A solução com 4 linhas */</span><br>
+          L1: canto inferior-esquerdo → canto superior-esquerdo (3 pontos)<br>
+          L2: continua na diagonal para fora → passa por 2 pontos novos<br>
+          L3: retorna horizontalmente → passa por 2 pontos novos<br>
+          L4: diagonal final → cobre os 2 restantes<br>
+          Total: 3 + 2 + 2 + 2 = <span class="result">9 pontos ✓</span>
+        </div>
+        <div class="retrospect">
+          <h4>📍 Retrospecto (Fase 4 de Pólya)</h4>
+          <p>A lição é profunda: muitos problemas se tornam impossíveis por causa de <strong>restrições fantasma</strong> que nós mesmos inventamos. Em psicologia cognitiva, isso se chama <em>fixação funcional</em>. Gardner amava este problema porque ele prova que o pensamento criativo começa quando questionamos nossas próprias suposições.</p>
+        </div>
+        <button class="check-btn" onclick="completeChallenge(2)" style="margin-top:1rem;">✅ Entendi! Marcar como concluído</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================ -->
+<!-- NÍVEL 2: TÁTICAS E PARIDADE -->
+<!-- ============================================ -->
+<section class="section" id="nivel2">
+  <div class="section-header">
+    <div class="level-badge level-2">🔧 Nível 2 — Intermediário</div>
+    <h2 class="section-title">Táticas, Heurística e Paridade</h2>
+    <p class="section-desc">Agora os problemas exigem reformulação, elementos auxiliares e provas de impossibilidade.</p>
+  </div>
+
+  <div class="focus-box focus-pedagogy">
+    🎓 <strong>Foco Pedagógico:</strong> Analogia, reestruturação da notação, elementos auxiliares e provas de impossibilidade por paridade.
+  </div>
+
+  <!-- Teacher Panel: Nivel 2 -->
+  <div class="teacher-panel">
+    <h4>Plano de Aula — Nível 2</h4>
+    <div class="teacher-grid">
+      <div class="teacher-stat"><div class="val">45 min</div><div class="lbl">Tempo sugerido</div></div>
+      <div class="teacher-stat"><div class="val">8º–9º ano</div><div class="lbl">Público ideal</div></div>
+      <div class="teacher-stat"><div class="val">Frações, MMC</div><div class="lbl">Pré-requisitos</div></div>
+    </div>
+    <h4 style="margin-top:1rem;">Objetivos de Aprendizagem</h4>
+    <ul>
+      <li>Utilizar a técnica do "elemento auxiliar" para simplificar problemas.</li>
+      <li>Compreender provas de impossibilidade via argumento de paridade (coloração).</li>
+      <li>Entender probabilidade condicional através do Problema de Monty Hall.</li>
+    </ul>
+    <h4>Atividade Sugerida — Azulejos Físicos</h4>
+    <p>Traga um tabuleiro de xadrez impresso e peças de dominó reais. Peça aos alunos que tentem cobrir o tabuleiro mutilado. A frustração prática é o melhor motivador para o "Aha!" da coloração.</p>
+  </div>
+
+  <!-- DESAFIO 3: O TESTAMENTO CURIOSO -->
+  <div class="challenge-block" id="challenge3">
+    <div class="challenge-icon">📜</div>
+    <h3>Desafio 3: O Testamento Curioso</h3>
+    <div class="problem-text">
+      Um fazendeiro deixou um testamento determinando que seus <strong>11 cavalos</strong> fossem divididos entre os três filhos:<br><br>
+      • O mais velho recebe <strong>1/2</strong> dos cavalos.<br>
+      • O do meio recebe <strong>1/4</strong> dos cavalos.<br>
+      • O mais novo recebe <strong>1/6</strong> dos cavalos.<br><br>
+      Os filhos ficaram perplexos: 11 não é divisível por 2, nem por 4, nem por 6!<br><br>
+      🤔 <strong>Como resolver essa herança sem violência contra os cavalos?</strong>
+    </div>
+
+    <div class="try-it-section">
+      <h4>✏️ Tente Resolver!</h4>
+      <p>Dica: Some as frações 1/2 + 1/4 + 1/6. O que você nota?</p>
+      <textarea class="try-textarea" placeholder="1/2 + 1/4 + 1/6 = ..."></textarea>
+      <div class="answer-input-group">
+        <span style="font-size:0.85rem; color:var(--text-secondary);">Resposta: Quanto o mais velho recebe?</span>
+        <input type="number" class="answer-input" id="ans3" placeholder="?">
+        <button class="check-btn" onclick="checkAnswer('ans3', 6, 'fb3')">Verificar</button>
+        <span class="answer-feedback" id="fb3"></span>
+      </div>
+    </div>
+
+    <button class="hint-btn" onclick="toggleHint('hint3')">🔍 Dica de Pólya</button>
+    <div class="hint-popup" id="hint3">
+      "Existe um <em>elemento auxiliar</em> que você possa introduzir para tornar o problema solúvel? E se você pudesse emprestar temporariamente algo ao problema?"
+    </div>
+
+    <div class="solution-tabs">
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="openTab(event, 'c3t1')"><span class="tab-icon">⚔</span> A Batalha Inicial</button>
+        <button class="tab-btn" onclick="openTab(event, 'c3t2')"><span class="tab-icon">💡</span> O Insight Aha!</button>
+        <button class="tab-btn" onclick="openTab(event, 'c3t3')"><span class="tab-icon">📓</span> A Prova Rigorosa</button>
+      </div>
+      <div class="tab-content active" id="c3t1">
+        <h4>⚔ A Batalha Inicial — O Detetive Examina as Frações</h4>
+        <ul>
+          <li>1/2 + 1/4 + 1/6 = 6/12 + 3/12 + 2/12 = <strong>11/12</strong></li>
+          <li>Curioso! A soma dá 11/12 e não 12/12. Sobra 1/12 do total!</li>
+          <li>O testamento não distribui tudo. Isso é uma pista enorme.</li>
+        </ul>
+        <p>Que número, divisível por 2, 4 e 6 ao mesmo tempo, está perto de 11?</p>
+      </div>
+      <div class="tab-content" id="c3t2">
+        <h4>💡 O Insight Aha! — O 12º Cavalo Emprestado</h4>
+        <div class="focus-box focus-insight">
+          Um vizinho sábio empresta <strong>1 cavalo</strong>. Agora são 12. O mais velho leva 12/2 = 6. O do meio leva 12/4 = 3. O mais novo leva 12/6 = 2. Total: 6 + 3 + 2 = 11. Sobra exatamente o cavalo emprestado, que volta ao vizinho!
+        </div>
+      </div>
+      <div class="tab-content" id="c3t3">
+        <h4>📓 A Prova Rigorosa — Análise Diofantina Elementar</h4>
+        <div class="math-block">
+          <span class="comment">/* Introduzindo o elemento auxiliar: N = 12 */</span><br>
+          MMC(2, 4, 6) = <span class="highlight">12</span><br>
+          12/2 = 6 &ensp;|&ensp; 12/4 = 3 &ensp;|&ensp; 12/6 = 2<br>
+          6 + 3 + 2 = 11 = <span class="result">N − 1</span> ✓<br><br>
+          <span class="comment">/* Por que funciona? */</span><br>
+          1/2 + 1/4 + 1/6 = 11/12<br>
+          N × (11/12) = 12 × (11/12) = <span class="result">11</span><br>
+          O elemento auxiliar "se cancela" porque a soma das frações &lt; 1.
+        </div>
+        <div class="retrospect">
+          <h4>📍 Retrospecto (Fase 4 de Pólya)</h4>
+          <p>A técnica do "elemento auxiliar" é poderosa em toda a matemática: desde adicionar uma linha de construção em geometria até introduzir uma variável temporária em álgebra.</p>
+        </div>
+        <button class="check-btn" onclick="completeChallenge(3)" style="margin-top:1rem;">✅ Entendi! Marcar como concluído</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESAFIO 4: OS AZULEJOS PROBLEMÁTICOS -->
+  <div class="challenge-block" id="challenge4">
+    <div class="challenge-icon">♟</div>
+    <h3>Desafio 4: Os Azulejos Problemáticos</h3>
+    <div class="problem-text">
+      Imagine um tabuleiro 8×8. Remova <strong>dois cantos diagonalmente opostos</strong>. Restam 62 casas.<br>
+      Você tem <strong>31 peças de dominó</strong>, cada uma cobrindo 2 casas adjacentes.<br><br>
+      🚨 <strong>É possível cobrir todas as 62 casas com os 31 dominós?</strong>
+    </div>
+
+    <div style="text-align:center;">
+      <div class="mini-board board-interactive" id="chessBoard"></div>
+      <div class="board-status" id="boardStatus">Clique em casas adjacentes para tentar colocar dominós. Peças colocadas: <strong>0</strong>/31</div>
+      <div style="margin-top:0.5rem;">
+        <button class="action-btn action-btn-red" onclick="resetBoard()" style="font-size:0.75rem;">🗑 Limpar Tabuleiro</button>
+      </div>
+    </div>
+
+    <button class="hint-btn" onclick="toggleHint('hint4')">🔍 Dica de Tao</button>
+    <div class="hint-popup" id="hint4">
+      "Modifique o problema radicalmente: e se você <em>colorisse</em> o tabuleiro? O que cada peça de dominó faz com as cores?"
+    </div>
+
+    <div class="solution-tabs">
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="openTab(event, 'c4t1')"><span class="tab-icon">⚔</span> A Batalha Inicial</button>
+        <button class="tab-btn" onclick="openTab(event, 'c4t2')"><span class="tab-icon">💡</span> O Insight Aha!</button>
+        <button class="tab-btn" onclick="openTab(event, 'c4t3')"><span class="tab-icon">📓</span> A Prova Rigorosa</button>
+      </div>
+      <div class="tab-content active" id="c4t1">
+        <h4>⚔ A Batalha Inicial — Tentativa e Frustração</h4>
+        <p>Você começa encaixando dominós. As primeiras fileiras parecem funcionar, mas perto do final sempre sobram casas não adjacentes.</p>
+        <ul>
+          <li>62 casas / 2 = 31 dominós. A conta fecha!</li>
+          <li>Mas por que nunca conseguimos completar?</li>
+          <li>Pólya sugere: "Trace uma figura!"</li>
+        </ul>
+      </div>
+      <div class="tab-content" id="c4t2">
+        <h4>💡 O Insight Aha! — O Argumento da Cor!</h4>
+        <div class="focus-box focus-insight">
+          Colora o tabuleiro como um xadrez! Cada dominó sempre cobre <strong>1 casa branca + 1 casa preta</strong>. Mas os dois cantos removidos são da <strong>mesma cor</strong>! Sobram 30 de uma e 32 da outra. Impossível!
+        </div>
+      </div>
+      <div class="tab-content" id="c4t3">
+        <h4>📓 A Prova Rigorosa — Checagem de Paridade</h4>
+        <div class="math-block">
+          <span class="comment">/* Coloração padrão do xadrez */</span><br>
+          Tabuleiro 8×8: 32 brancas + 32 pretas<br><br>
+          <span class="comment">/* Propriedade do dominó */</span><br>
+          Todo dominó cobre: <span class="highlight">1 branca + 1 preta</span><br><br>
+          <span class="comment">/* Remoção dos cantos opostos */</span><br>
+          Cantos opostos = <span class="impossible">mesma cor</span><br>
+          Ex: ambos brancos → restam 30 brancas + 32 pretas<br>
+          k dominós cobrem: k brancas + k pretas<br>
+          Precisamos: k = 30 E k = 32<br>
+          30 ≠ 32 → <span class="impossible">CONTRADIÇÃO. Impossível.</span> ■
+        </div>
+        <div class="retrospect">
+          <h4>📍 Retrospecto</h4>
+          <p>A técnica de <strong>colorir</strong> (atribuir paridade) é uma das armas mais elegantes da combinatória. Quando não consegue provar que algo funciona, prove que é <em>impossível</em>.</p>
+        </div>
+        <button class="check-btn" onclick="completeChallenge(4)" style="margin-top:1rem;">✅ Entendi! Marcar como concluído</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESAFIO 5 (NOVO): MONTY HALL -->
+  <div class="challenge-block" id="challenge5">
+    <div class="challenge-icon">🚪</div>
+    <h3>Desafio 5: O Dilema de Monty Hall</h3>
+    <div class="problem-text">
+      Você está num programa de TV. Há <strong>3 portas</strong>: atrás de uma há um carro, atrás das outras duas há cabras. Você escolhe uma porta (digamos, a nº 1). O apresentador, que sabe o que há atrás de cada porta, abre <em>outra</em> porta mostrando uma cabra (digamos, a nº 3).<br><br>
+      Ele pergunta: <strong>"Você quer trocar para a porta nº 2?"</strong><br><br>
+      🤔 <strong>Vale a pena trocar? Isso muda suas chances?</strong>
+    </div>
+
+    <!-- INTERACTIVE MONTY HALL GAME -->
+    <div class="monty-hall-game" id="montyGame">
+      <p style="font-size:0.85rem; color:var(--text-muted);" id="montyInstructions">Escolha uma porta clicando nela:</p>
+      <div class="doors-container" id="doorsContainer">
+        <div class="door" onclick="montyChoose(0)">
+          <div class="door-number">1</div>
+          <div class="door-label">Porta</div>
+          <div class="door-content"></div>
+        </div>
+        <div class="door" onclick="montyChoose(1)">
+          <div class="door-number">2</div>
+          <div class="door-label">Porta</div>
+          <div class="door-content"></div>
+        </div>
+        <div class="door" onclick="montyChoose(2)">
+          <div class="door-number">3</div>
+          <div class="door-label">Porta</div>
+          <div class="door-content"></div>
+        </div>
+      </div>
+      <div id="montyActions" style="display:none; margin-top:1rem;">
+        <button class="action-btn action-btn-blue" onclick="montyDecide(false)" style="margin-right:0.5rem;">🔒 Manter minha escolha</button>
+        <button class="action-btn action-btn-green" onclick="montyDecide(true)">🔀 Trocar de porta</button>
+      </div>
+      <div id="montyResult" style="display:none; margin-top:1rem; font-size:0.95rem;"></div>
+      <div class="monty-stats" id="montyStats" style="display:none;">
+        <div><div class="stat-val" style="color:var(--accent-green);" id="statSwitch">0/0</div><div class="stat-lbl">Vitórias trocando</div></div>
+        <div><div class="stat-val" style="color:var(--accent-blue);" id="statStay">0/0</div><div class="stat-lbl">Vitórias mantendo</div></div>
+      </div>
+      <div style="margin-top:0.8rem;">
+        <button class="action-btn hint-btn" onclick="montyReset()" style="font-size:0.78rem;">🔄 Jogar novamente</button>
+        <button class="action-btn action-btn-blue" onclick="montySimulate(100)" style="font-size:0.78rem;">⚡ Simular 100 rodadas</button>
+      </div>
+    </div>
+
+    <button class="hint-btn" onclick="toggleHint('hint5')">🔍 Dica de Pólya</button>
+    <div class="hint-popup" id="hint5">
+      "E se em vez de 3 portas fossem <em>100 portas</em>? Você escolhe 1, o apresentador abre 98 revelando cabras. Agora quer trocar?"
+    </div>
+
+    <div class="solution-tabs">
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="openTab(event, 'c5t1')"><span class="tab-icon">⚔</span> A Batalha Inicial</button>
+        <button class="tab-btn" onclick="openTab(event, 'c5t2')"><span class="tab-icon">💡</span> O Insight Aha!</button>
+        <button class="tab-btn" onclick="openTab(event, 'c5t3')"><span class="tab-icon">📓</span> A Prova Rigorosa</button>
+      </div>
+      <div class="tab-content active" id="c5t1">
+        <h4>⚔ A Batalha Inicial — "Dá no mesmo, não?"</h4>
+        <p>A intuição grita: "São duas portas, 50/50!" Mas será mesmo?</p>
+        <ul>
+          <li>No início, sua chance é 1/3 para cada porta.</li>
+          <li>O apresentador <em>sempre</em> abre uma porta com cabra (ele sabe onde está o carro).</li>
+          <li>A ação dele não é aleatória — ela carrega <em>informação</em>.</li>
+        </ul>
+      </div>
+      <div class="tab-content" id="c5t2">
+        <h4>💡 O Insight Aha! — A Informação do Apresentador</h4>
+        <div class="focus-box focus-insight">
+          Quando você escolheu, tinha 1/3 de chance de acertar e 2/3 de errar. Ao abrir uma porta errada, o apresentador <strong>concentra</strong> os 2/3 na porta restante. Trocar é como ficar com as duas portas que você NÃO escolheu!
+        </div>
+      </div>
+      <div class="tab-content" id="c5t3">
+        <h4>📓 A Prova Rigorosa — Probabilidade Condicional</h4>
+        <div class="math-block">
+          <span class="comment">/* Enumeração completa (sem perda de generalidade) */</span><br>
+          Suponha que você escolheu a Porta 1.<br><br>
+          <span class="comment">/* Cenário A: carro na Porta 1 (prob = 1/3) */</span><br>
+          Apresentador abre 2 ou 3. Se trocar: <span class="impossible">PERDE</span><br><br>
+          <span class="comment">/* Cenário B: carro na Porta 2 (prob = 1/3) */</span><br>
+          Apresentador abre 3 (obrigatório). Se trocar: <span class="result">GANHA</span><br><br>
+          <span class="comment">/* Cenário C: carro na Porta 3 (prob = 1/3) */</span><br>
+          Apresentador abre 2 (obrigatório). Se trocar: <span class="result">GANHA</span><br><br>
+          P(ganhar | trocar) = <span class="result">2/3 ≈ 66.7%</span><br>
+          P(ganhar | manter) = <span class="impossible">1/3 ≈ 33.3%</span><br><br>
+          <span class="highlight">TROCAR DOBRA suas chances!</span>
+        </div>
+        <div class="retrospect">
+          <h4>📍 Retrospecto</h4>
+          <p>Este problema enganou até matemáticos profissionais! A chave é que o apresentador <em>não age aleatoriamente</em>. Quando alguém com informação privilegiada age, essa ação altera as probabilidades. Isso é a base do <strong>Teorema de Bayes</strong>, fundamental em IA, medicina e ciência de dados.</p>
+        </div>
+        <button class="check-btn" onclick="completeChallenge(5)" style="margin-top:1rem;">✅ Entendi! Marcar como concluído</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================ -->
+<!-- NÍVEL 3: O ARSENAL AVANÇADO -->
+<!-- ============================================ -->
+<section class="section" id="nivel3">
+  <div class="section-header">
+    <div class="level-badge level-3">⚡ Nível 3 — Avançado</div>
+    <h2 class="section-title">O Arsenal Matemático Avançado</h2>
+    <p class="section-desc">Indução, Invariantes, Teoria dos Jogos e Aritmética Modular. Cada problema exige combinar múltiplas táticas.</p>
+  </div>
+
+  <div class="focus-box focus-pedagogy">
+    🎓 <strong>Foco Pedagógico:</strong> Indução, invariantes, aritmética modular, teoria dos jogos combinatórios e correspondência biunívoca com o infinito.
+  </div>
+
+  <!-- Teacher Panel: Nivel 3 -->
+  <div class="teacher-panel">
+    <h4>Plano de Aula — Nível 3</h4>
+    <div class="teacher-grid">
+      <div class="teacher-stat"><div class="val">60 min</div><div class="lbl">Tempo sugerido</div></div>
+      <div class="teacher-stat"><div class="val">Ensino Médio / Superior</div><div class="lbl">Público ideal</div></div>
+      <div class="teacher-stat"><div class="val">Álgebra, Aritmética Modular</div><div class="lbl">Pré-requisitos</div></div>
+    </div>
+    <h4 style="margin-top:1rem;">Objetivos de Aprendizagem</h4>
+    <ul>
+      <li>Aplicar argumentos de contagem/paridade para determinar vencedores em jogos.</li>
+      <li>Utilizar invariantes modulares para provar impossibilidades.</li>
+      <li>Compreender o conceito de infinito contável e biunívoca.</li>
+    </ul>
+    <h4>Atividade Sugerida — Simulador de Camaleões</h4>
+    <p>Use o simulador interativo abaixo para que os alunos experimentem encontros de camaleões. Peça que registrem o estado (mod 3) após cada encontro e observem o que permanece constante. O invariante deve emergir empiricamente antes da prova formal.</p>
+  </div>
+
+  <!-- DESAFIO 6: O JOGO DO CHOCOLATE -->
+  <div class="challenge-block" id="challenge6">
+    <div class="challenge-icon">🍫</div>
+    <h3>Desafio 6: O Jogo do Chocolate</h3>
+    <div class="problem-text">
+      Dois jogadores têm uma barra de <strong>6 × 10 = 60 pedaços</strong>. Eles se alternam quebrando uma parte retangular em duas menores. Quem for obrigado a ficar com a última peça <strong>1×1</strong> (sem poder quebrar mais) <strong>perde</strong>.<br><br>
+      🤔 <strong>Existe uma estratégia vencedora? Quem ganha?</strong>
+    </div>
+
+    <div class="choco-wrapper">
+      <div class="choco-grid" style="grid-template-columns: repeat(10, 24px); grid-template-rows: repeat(6, 24px);" id="chocoGrid"></div>
+      <div class="choco-status">Barra 6×10 — <strong>60 pedaços</strong></div>
+    </div>
+
+    <div class="try-it-section">
+      <h4>✏️ Tente Resolver!</h4>
+      <p>Pista: Quantas "quebras" são necessárias no total para ir de 1 peça até 60 pedaços individuais?</p>
+      <div class="answer-input-group">
+        <span style="font-size:0.85rem; color:var(--text-secondary);">Número total de quebras:</span>
+        <input type="number" class="answer-input" id="ans6" placeholder="?">
+        <button class="check-btn" onclick="checkAnswer('ans6', 59, 'fb6')">Verificar</button>
+        <span class="answer-feedback" id="fb6"></span>
+      </div>
+    </div>
+
+    <button class="hint-btn" onclick="toggleHint('hint6')">🔍 Dica de Tao</button>
+    <div class="hint-popup" id="hint6">
+      "Resolva uma versão <em>simplificada</em>. E numa barra 2×2? Quantas quebras? 59 é ímpar ou par?"
+    </div>
+
+    <div class="solution-tabs">
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="openTab(event, 'c6t1')"><span class="tab-icon">⚔</span> A Batalha Inicial</button>
+        <button class="tab-btn" onclick="openTab(event, 'c6t2')"><span class="tab-icon">💡</span> O Insight Aha!</button>
+        <button class="tab-btn" onclick="openTab(event, 'c6t3')"><span class="tab-icon">📓</span> A Prova Rigorosa</button>
+      </div>
+      <div class="tab-content active" id="c6t1">
+        <h4>⚔ A Batalha Inicial — Simplificar!</h4>
+        <ul>
+          <li><strong>1×1:</strong> Quem recebe já perdeu. Posição <em>perdedora</em>.</li>
+          <li><strong>2×2:</strong> 3 quebras no total.</li>
+          <li>Pergunta-chave: <strong>quantas quebras no total</strong>, independente da estratégia?</li>
+        </ul>
+      </div>
+      <div class="tab-content" id="c6t2">
+        <h4>💡 O Insight Aha! — Conte as Quebras!</h4>
+        <div class="focus-box focus-insight">
+          Cada quebra aumenta o número de pedaços em exatamente 1. De 1 peça até 60 pedaços = <strong>exatamente 59 quebras</strong>, sempre! 59 é ímpar, então o Jogador 1 faz a última quebra. <strong>Jogador 1 SEMPRE vence!</strong>
+        </div>
+      </div>
+      <div class="tab-content" id="c6t3">
+        <h4>📓 A Prova Rigorosa</h4>
+        <div class="math-block">
+          <span class="comment">/* Invariante */</span><br>
+          Barra m×n: quebras = m×n − 1 = <span class="highlight">59</span> (ímpar)<br>
+          J1: quebras 1, 3, 5, ..., 59 → 30 jogadas<br>
+          J2: quebras 2, 4, 6, ..., 58 → 29 jogadas<br>
+          J1 faz a 59ª quebra. J2 fica sem jogada.<br>
+          <span class="result">Jogador 1 SEMPRE vence</span>, qualquer que seja a estratégia!
+        </div>
+        <div class="retrospect">
+          <h4>📍 Retrospecto</h4>
+          <p>O invariante (número total de quebras é fixo) torna a estratégia irrelevante — o resultado depende apenas da paridade. Isso resolve uma família inteira de jogos.</p>
+        </div>
+        <button class="check-btn" onclick="completeChallenge(6)" style="margin-top:1rem;">✅ Marcar como concluído</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESAFIO 7: OS CAMALEÕES DA ILHA -->
+  <div class="challenge-block" id="challenge7">
+    <div class="challenge-icon">🦎</div>
+    <h3>Desafio 7: Os Camaleões da Ilha</h3>
+    <div class="problem-text">
+      Uma ilha tem <strong>13 cinzas, 15 marrons e 17 vermelhos</strong>. Quando dois de cores <em>diferentes</em> se encontram, ambos viram a <em>terceira cor</em>.<br><br>
+      🚨 <strong>É possível que todos os 45 fiquem da mesma cor?</strong>
+    </div>
+
+    <!-- CHAMELEON SIMULATOR -->
+    <div class="chameleon-visual" id="chamVisual">
+      <div class="cham-group cham-gray"><div class="count" id="chamC">13</div><div class="label">Cinzas</div></div>
+      <div class="cham-group cham-brown"><div class="count" id="chamM">15</div><div class="label">Marrons</div></div>
+      <div class="cham-group cham-red"><div class="count" id="chamV">17</div><div class="label">Vermelhos</div></div>
+    </div>
+    <div class="cham-sim">
+      <button class="cham-sim-btn" onclick="chamEncounter('CM')">Cinza + Marrom</button>
+      <button class="cham-sim-btn" onclick="chamEncounter('CV')">Cinza + Vermelho</button>
+      <button class="cham-sim-btn" onclick="chamEncounter('MV')">Marrom + Vermelho</button>
+      <button class="cham-sim-btn" onclick="chamReset()" style="border-color:var(--accent-red);">🔄 Resetar</button>
+    </div>
+    <div style="text-align:center; margin-top:0.5rem;">
+      <span class="board-status" id="chamModStatus">Diferenças mod 3: C−M ≡ <strong>1</strong>, C−V ≡ <strong>2</strong>, M−V ≡ <strong>1</strong></span>
+    </div>
+
+    <button class="hint-btn" onclick="toggleHint('hint7')">🔍 Dica de Tao</button>
+    <div class="hint-popup" id="hint7">
+      "Busque um <em>invariante</em>. O que acontece com as diferenças entre as populações módulo 3?"
+    </div>
+
+    <div class="solution-tabs">
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="openTab(event, 'c7t1')"><span class="tab-icon">⚔</span> A Batalha Inicial</button>
+        <button class="tab-btn" onclick="openTab(event, 'c7t2')"><span class="tab-icon">💡</span> O Insight Aha!</button>
+        <button class="tab-btn" onclick="openTab(event, 'c7t3')"><span class="tab-icon">📓</span> A Prova Rigorosa</button>
+      </div>
+      <div class="tab-content active" id="c7t1">
+        <h4>⚔ A Batalha Inicial — Modelagem em Vetores</h4>
+        <ul>
+          <li>Estado inicial: <strong>(C, M, V) = (13, 15, 17)</strong></li>
+          <li>Cinza+Marrom: (C−1, M−1, V+2)</li>
+          <li>Cada encontro muda duas populações em −1 e uma em +2.</li>
+          <li>Use o simulador acima! Observe a linha "mod 3"...</li>
+        </ul>
+      </div>
+      <div class="tab-content" id="c7t2">
+        <h4>💡 O Insight Aha! — A Regra Oculta do Módulo 3</h4>
+        <div class="focus-box focus-insight">
+          Em cada encontro, −1 e +2 diferem por 3. Então as diferenças entre populações <strong>nunca mudam módulo 3</strong>! Para todos serem iguais, precisaríamos diferenças ≡ 0 (mod 3), mas C−M ≡ 1. Impossível!
+        </div>
+      </div>
+      <div class="tab-content" id="c7t3">
+        <h4>📓 A Prova Rigorosa — Invariante Modular</h4>
+        <div class="math-block">
+          <span class="comment">/* Invariante */</span><br>
+          (13, 15, 17) mod 3 = <span class="highlight">(1, 0, 2)</span><br><br>
+          Todo encontro soma (+2, +2, +2) mod 3 a cada componente.<br>
+          C − M (mod 3) é <span class="highlight">invariante</span> = 1<br><br>
+          <span class="comment">/* Se todos ficassem da mesma cor */</span><br>
+          (45, 0, 0) → C − M = 45 ≡ 0 (mod 3)<br>
+          Mas C − M ≡ <span class="impossible">1 (mod 3)</span><br>
+          0 ≠ 1 → <span class="impossible">IMPOSSÍVEL</span> ■
+        </div>
+        <div class="retrospect">
+          <h4>📍 Retrospecto</h4>
+          <p><strong>Invariantes modulares</strong> são usados em criptografia (RSA), física (conservação de energia) e muito mais. Se uma quantidade nunca muda, e o alvo exige outro valor, o alvo é inatingível.</p>
+        </div>
+        <button class="check-btn" onclick="completeChallenge(7)" style="margin-top:1rem;">✅ Marcar como concluído</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESAFIO 8: O HOTEL INFINITO DE HILBERT -->
+  <div class="challenge-block" id="challenge8">
+    <div class="challenge-icon">🏨</div>
+    <h3>Desafio 8: O Hotel Infinito de Hilbert</h3>
+    <div class="problem-text">
+      Um hotel com <strong>infinitos quartos</strong> (1, 2, 3, ...), todos ocupados.<br><br>
+      <strong>Cenário A:</strong> Chega 1 novo hóspede. É possível acomodá-lo?<br>
+      <strong>Cenário B:</strong> Chega um ônibus com infinitos passageiros. É possível acomodar todos?<br><br>
+      🤔 <strong>Como criar vagas num hotel lotado?</strong>
+    </div>
+
+    <!-- INTERACTIVE HOTEL -->
+    <div class="hotel-visual" id="hotelVisual">
+      <div class="hotel-room occupied">1</div>
+      <div class="hotel-room occupied">2</div>
+      <div class="hotel-room occupied">3</div>
+      <div class="hotel-room occupied">4</div>
+      <div class="hotel-room occupied">5</div>
+      <div class="hotel-room occupied">6</div>
+      <div class="hotel-room occupied">7</div>
+      <div class="hotel-room occupied">8</div>
+      <div class="hotel-room occupied">9</div>
+      <div class="hotel-room occupied">10</div>
+      <div class="hotel-room dots">...</div>
+      <div class="hotel-room occupied">∞</div>
+    </div>
+    <div class="hotel-controls">
+      <button class="action-btn action-btn-green" onclick="hotelShift()">➡️ n → n+1 (1 vaga)</button>
+      <button class="action-btn action-btn-blue" onclick="hotelDouble()">×2 n → 2n (∞ vagas)</button>
+      <button class="action-btn action-btn-red" onclick="hotelReset()">🔄 Resetar</button>
+    </div>
+
+    <button class="hint-btn" onclick="toggleHint('hint8')">🔍 Dica de Pólya</button>
+    <div class="hint-popup" id="hint8">
+      "Em vez de 'criar um quarto novo', peça a <em>cada</em> hóspede que faça um pequeno favor..."
+    </div>
+
+    <div class="solution-tabs">
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="openTab(event, 'c8t1')"><span class="tab-icon">⚔</span> A Batalha Inicial</button>
+        <button class="tab-btn" onclick="openTab(event, 'c8t2')"><span class="tab-icon">💡</span> O Insight Aha!</button>
+        <button class="tab-btn" onclick="openTab(event, 'c8t3')"><span class="tab-icon">📓</span> A Prova Rigorosa</button>
+      </div>
+      <div class="tab-content active" id="c8t1">
+        <h4>⚔ A Batalha Inicial</h4>
+        <p>Nosso instinto finito protesta: "Se todos os quartos estão ocupados, não há vaga!" Mas o infinito não tem ponto final...</p>
+        <ul>
+          <li>Em 100 quartos, cheio = cheio. Ponto final.</li>
+          <li>Mas com infinitos quartos, podemos <em>reorganizar</em>.</li>
+          <li>Use os botões acima para visualizar!</li>
+        </ul>
+      </div>
+      <div class="tab-content" id="c8t2">
+        <h4>💡 O Insight Aha! — Translada, Multiplica, Conquista!</h4>
+        <div class="focus-box focus-insight">
+          <strong>Cenário A:</strong> Cada hóspede muda para n+1. Quarto 1 fica livre!<br>
+          <strong>Cenário B:</strong> Cada hóspede muda para 2n. Todos os ímpares ficam livres — <strong>infinitas vagas</strong>!
+        </div>
+      </div>
+      <div class="tab-content" id="c8t3">
+        <h4>📓 A Prova Rigorosa — Correspondência Biunívoca</h4>
+        <div class="math-block">
+          <span class="comment">/* Cenário A */</span><br>
+          f(n) = n + 1 é injetiva: f(a)=f(b) → a=b ✓<br>
+          Imagem = {2, 3, 4, ...}. <span class="result">Quarto 1 livre</span>.<br><br>
+          <span class="comment">/* Cenário B */</span><br>
+          g(n) = 2n é injetiva. Imagem = {2, 4, 6, ...}<br>
+          <span class="result">Todos os ímpares livres</span>: {1, 3, 5, ...}<br><br>
+          |ℕ| = |ℕ\{1}| = |pares| = |ímpares| = <span class="highlight">ℵ₀</span><br>
+          Um conjunto infinito pode ter a <span class="highlight">mesma cardinalidade</span><br>
+          que uma de suas partes próprias!
+        </div>
+        <div class="retrospect">
+          <h4>📍 Retrospecto</h4>
+          <p>O Hotel de Hilbert ilustra a propriedade mais surpreendente do infinito. A "correspondência biunívoca" é a ferramenta para comparar tamanhos de infinitos — e sim, existem infinitos maiores que outros (Cantor)!</p>
+        </div>
+        <button class="check-btn" onclick="completeChallenge(8)" style="margin-top:1rem;">✅ Marcar como concluído</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================ -->
+<!-- NÍVEL 4: EXPERT -->
+<!-- ============================================ -->
+<section class="section" id="nivel4">
+  <div class="section-header">
+    <div class="level-badge level-4">🏆 Nível 4 — Expert</div>
+    <h2 class="section-title">As Fronteiras do Pensamento</h2>
+    <p class="section-desc">Problemas que conectam a matemática recreativa às grandes questões da teoria dos grafos e da topologia. Aqui, você opera no nível de competições internacionais.</p>
+  </div>
+
+  <div class="focus-box focus-pedagogy">
+    🎓 <strong>Foco Pedagógico:</strong> Teoria dos grafos (grau de vértices), argumentos de paridade avançados e modelagem combinatória de problemas reais.
+  </div>
+
+  <!-- Teacher Panel: Nivel 4 -->
+  <div class="teacher-panel">
+    <h4>Plano de Aula — Nível 4</h4>
+    <div class="teacher-grid">
+      <div class="teacher-stat"><div class="val">60–90 min</div><div class="lbl">Tempo sugerido</div></div>
+      <div class="teacher-stat"><div class="val">Ens. Médio / Olimpíadas</div><div class="lbl">Público ideal</div></div>
+      <div class="teacher-stat"><div class="val">Teoria dos Grafos básica</div><div class="lbl">Pré-requisitos</div></div>
+    </div>
+    <h4 style="margin-top:1rem;">Objetivos de Aprendizagem</h4>
+    <ul>
+      <li>Modelar problemas reais como grafos e analisar propriedades estruturais.</li>
+      <li>Compreender o conceito de caminho/circuito euleriano.</li>
+      <li>Conectar a matemática recreativa à história da disciplina (Euler, 1736).</li>
+    </ul>
+  </div>
+
+  <!-- DESAFIO 9: AS PONTES DE KÖNIGSBERG -->
+  <div class="challenge-block" id="challenge9">
+    <div class="challenge-icon">🌉</div>
+    <h3>Desafio 9: As Pontes de Königsberg</h3>
+    <div class="problem-text">
+      A cidade de Königsberg (hoje Kaliningrado, Rússia) tinha 4 regiões de terra conectadas por <strong>7 pontes</strong> sobre o rio Pregel. Os moradores perguntavam:<br><br>
+      🚶 <strong>É possível fazer um passeio cruzando cada ponte exatamente uma vez e voltar ao ponto de partida?</strong>
+    </div>
+
+    <!-- BRIDGES VISUAL (SVG) -->
+    <div class="bridges-wrap">
+      <svg width="340" height="240" viewBox="0 0 340 240" style="background: rgba(0,0,0,0.2); border-radius: 12px;">
+        <!-- Water -->
+        <rect x="0" y="80" width="340" height="80" fill="rgba(79,195,247,0.1)" rx="0"/>
+        <!-- Islands -->
+        <ellipse cx="170" cy="120" rx="50" ry="25" fill="#1a1a2e" stroke="#4fc3f7" stroke-width="1.5"/>
+        <text x="170" y="125" text-anchor="middle" fill="#4fc3f7" font-size="12" font-family="Inter">C</text>
+        <!-- Land masses -->
+        <rect x="10" y="10" width="100" height="60" rx="10" fill="#1a1a2e" stroke="#f0c040" stroke-width="1.5"/>
+        <text x="60" y="45" text-anchor="middle" fill="#f0c040" font-size="14" font-weight="bold" font-family="Inter">A</text>
+        <rect x="230" y="10" width="100" height="60" rx="10" fill="#1a1a2e" stroke="#f0c040" stroke-width="1.5"/>
+        <text x="280" y="45" text-anchor="middle" fill="#f0c040" font-size="14" font-weight="bold" font-family="Inter">B</text>
+        <rect x="100" y="170" width="140" height="60" rx="10" fill="#1a1a2e" stroke="#f0c040" stroke-width="1.5"/>
+        <text x="170" y="205" text-anchor="middle" fill="#f0c040" font-size="14" font-weight="bold" font-family="Inter">D</text>
+        <!-- Bridges (7 total) -->
+        <line x1="80" y1="70" x2="130" y2="100" stroke="#ef5350" stroke-width="3" stroke-linecap="round"/>
+        <line x1="60" y1="70" x2="145" y2="108" stroke="#ef5350" stroke-width="3" stroke-linecap="round"/>
+        <line x1="260" y1="70" x2="210" y2="100" stroke="#ef5350" stroke-width="3" stroke-linecap="round"/>
+        <line x1="280" y1="70" x2="195" y2="108" stroke="#ef5350" stroke-width="3" stroke-linecap="round"/>
+        <line x1="150" y1="142" x2="145" y2="170" stroke="#ef5350" stroke-width="3" stroke-linecap="round"/>
+        <line x1="190" y1="142" x2="195" y2="170" stroke="#ef5350" stroke-width="3" stroke-linecap="round"/>
+        <line x1="60" y1="70" x2="140" y2="170" stroke="#ef5350" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+        <!-- Labels -->
+        <text x="170" y="20" text-anchor="middle" fill="#6a6a80" font-size="10" font-family="Inter">7 pontes em vermelho</text>
+      </svg>
+    </div>
+
+    <div class="try-it-section">
+      <h4>✏️ Tente Resolver!</h4>
+      <p>Conte quantas pontes chegam a cada região (o "grau" de cada vértice no grafo). O que você nota?</p>
+      <div class="answer-input-group">
+        <span style="font-size:0.85rem; color:var(--text-secondary);">Quantos vértices têm grau ímpar?</span>
+        <input type="number" class="answer-input" id="ans9" placeholder="?">
+        <button class="check-btn" onclick="checkAnswer('ans9', 4, 'fb9')">Verificar</button>
+        <span class="answer-feedback" id="fb9"></span>
+      </div>
+    </div>
+
+    <button class="hint-btn" onclick="toggleHint('hint9')">🔍 Dica de Tao</button>
+    <div class="hint-popup" id="hint9">
+      "Abstraia o mapa para um <em>grafo</em>: regiões viram vértices, pontes viram arestas. Agora conte o <em>grau</em> de cada vértice. Euler descobriu algo sobre graus ímpares..."
+    </div>
+
+    <div class="solution-tabs">
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="openTab(event, 'c9t1')"><span class="tab-icon">⚔</span> A Batalha Inicial</button>
+        <button class="tab-btn" onclick="openTab(event, 'c9t2')"><span class="tab-icon">💡</span> O Insight Aha!</button>
+        <button class="tab-btn" onclick="openTab(event, 'c9t3')"><span class="tab-icon">📓</span> A Prova Rigorosa</button>
+      </div>
+      <div class="tab-content active" id="c9t1">
+        <h4>⚔ A Batalha Inicial — Transformar o Mapa em Grafo</h4>
+        <p>Tao ensina: "escolha uma notação simétrica". Transformamos o mapa em um grafo:</p>
+        <ul>
+          <li><strong>Vértice A:</strong> conectado a C por 2 pontes + D por 1 = grau <strong>3</strong></li>
+          <li><strong>Vértice B:</strong> conectado a C por 2 pontes + D por 0 (depende da configuração) = grau <strong>3</strong></li>
+          <li><strong>Vértice C (ilha):</strong> 2+2+2 = grau <strong>5</strong></li>
+          <li><strong>Vértice D:</strong> 1+2+1 = grau <strong>3</strong></li>
+          <li>Todos os 4 vértices têm grau <strong>ímpar</strong>!</li>
+        </ul>
+      </div>
+      <div class="tab-content" id="c9t2">
+        <h4>💡 O Insight Aha! — O Teorema de Euler</h4>
+        <div class="focus-box focus-insight">
+          Euler percebeu: para que exista um circuito que passe por cada aresta exatamente uma vez (circuito euleriano), <strong>todo vértice deve ter grau par</strong>. Para um caminho (sem voltar ao início), no máximo <strong>2 vértices</strong> podem ter grau ímpar. Königsberg tem <strong>4 vértices ímpares</strong> — impossível!
+        </div>
+        <p>Este insight, publicado em 1736, é considerado o <strong>nascimento da Teoria dos Grafos</strong>.</p>
+      </div>
+      <div class="tab-content" id="c9t3">
+        <h4>📓 A Prova Rigorosa — Teorema de Euler para Grafos</h4>
+        <div class="math-block">
+          <span class="comment">/* Modelagem */</span><br>
+          G = (V, E) com V = {A, B, C, D}, |E| = 7<br>
+          grau(A) = 3, grau(B) = 3, grau(C) = 5, grau(D) = 3<br><br>
+          <span class="comment">/* Teorema de Euler (1736) */</span><br>
+          Circuito Euleriano existe ⟺ todo vértice tem grau par<br>
+          Caminho Euleriano existe ⟺ exatamente 0 ou 2 vértices ímpares<br><br>
+          <span class="comment">/* Aplicando a Königsberg */</span><br>
+          Vértices com grau ímpar: <span class="impossible">4</span> (todos!)<br>
+          4 > 2 → nem circuito nem caminho euleriano existe.<br>
+          <span class="impossible">O passeio é IMPOSSÍVEL.</span> ■<br><br>
+          <span class="comment">/* Intuição da prova */</span><br>
+          Se um vértice tem grau ímpar, em algum momento<br>
+          você "entra" nele sem conseguir "sair" (ou vice-versa).<br>
+          Com mais de 2 vértices ímpares, ficamos "presos".
+        </div>
+        <div class="retrospect">
+          <h4>📍 Retrospecto</h4>
+          <p>Euler transformou um problema de passeio em uma questão sobre <em>estrutura abstrata</em>. Esse ato de abstração — ignorar detalhes irrelevantes (geometria do mapa) e focar no essencial (conexões) — é a essência do pensamento matemático. A Teoria dos Grafos que nasceu aqui hoje sustenta a internet, redes sociais, GPS e bioinformática.</p>
+        </div>
+        <button class="check-btn" onclick="completeChallenge(9)" style="margin-top:1rem;">✅ Marcar como concluído</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================ -->
+<!-- FOOTER -->
+<!-- ============================================ -->
+<footer class="footer">
+  <p class="footer-quote" data-i18n="footer-quote">
+    "Não tenha medo de testar ideias malucas. A heurística tem razões que a própria demonstração rigorosa desconhece — mas lembre-se sempre de fazer o Retrospecto no final."
+  </p>
+  <p style="margin-top:1.5rem;">
+    Inspirado por <strong>Martin Gardner</strong> (Aha! Insight), <strong>George Pólya</strong> (A Arte de Resolver Problemas) e <strong>Terence Tao</strong> (Solving Mathematical Problems).
+  </p>
+  <p style="margin-top:0.8rem; font-size:0.7rem; color:var(--text-muted);">
+    Página educacional interativa — 2026
+  </p>
+</footer>
+
+<!-- ============================================ -->
+<!-- JAVASCRIPT -->
+<!-- ============================================ -->
+<script>
+// ============================
+// GLOBAL STATE
+// ============================
+var challengesCompleted = {};
+var totalChallenges = 9;
+var timers = {};
+
+// Chameleon state
+var chamState = {C: 13, M: 15, V: 17};
+
+// Monty Hall stats
+var montyData = { switchWins: 0, switchTotal: 0, stayWins: 0, stayTotal: 0 };
+var montyCarDoor = -1;
+var montyPlayerChoice = -1;
+var montyOpenedDoor = -1;
+var montyPhase = 'choose';
+
+// 9 Dots state
+var dotsPoints = [];
+var dotsLines = [];
+var dotsHitPoints = [];
+var dotsDrawing = false;
+var dotsLastPoint = null;
+
+// Chess board domino state
+var boardCells = [];
+var boardSelected = null;
+var boardDominoes = 0;
+
+// ============================
+// XP PROGRESS BAR
+// ============================
+function updateXP() {
+  var count = Object.keys(challengesCompleted).length;
+  var pct = (count / totalChallenges) * 100;
+  document.getElementById('xpBarFill').style.width = pct + '%';
+  document.getElementById('xpText').textContent = count + ' / ' + totalChallenges + ' desafios';
+  if (count === totalChallenges) {
+    launchConfetti();
+  }
+}
+
+function completeChallenge(n) {
+  if (!challengesCompleted[n]) {
+    challengesCompleted[n] = true;
+    updateXP();
+    var btn = event.target;
+    btn.textContent = '✅ Concluído!';
+    btn.style.background = 'var(--text-muted)';
+    btn.style.cursor = 'default';
+    btn.disabled = true;
+    miniConfetti(btn);
+  }
+}
+
+// ============================
+// CONFETTI
+// ============================
+function launchConfetti() {
+  var colors = ['#f0c040','#4fc3f7','#66bb6a','#ef5350','#ab47bc','#ffa726'];
+  for (var i = 0; i < 60; i++) {
+    setTimeout(function() {
+      var el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.top = '-10px';
+      el.style.width = (Math.random() * 8 + 4) + 'px';
+      el.style.height = (Math.random() * 8 + 4) + 'px';
+      el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      el.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+      el.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+      document.body.appendChild(el);
+      setTimeout(function(){ el.remove(); }, 3000);
+    }, i * 30);
+  }
+}
+
+function miniConfetti(btn) {
+  var rect = btn.getBoundingClientRect();
+  var colors = ['#f0c040','#66bb6a','#4fc3f7'];
+  for (var i = 0; i < 12; i++) {
+    var el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.left = (rect.left + rect.width/2 + (Math.random()-0.5)*60) + 'px';
+    el.style.top = rect.top + 'px';
+    el.style.width = '6px'; el.style.height = '6px';
+    el.style.background = colors[Math.floor(Math.random()*colors.length)];
+    el.style.borderRadius = '50%';
+    document.body.appendChild(el);
+    setTimeout(function(){ el.remove(); }, 2500);
+  }
+}
+
+// ============================
+// TABS
+// ============================
+function openTab(evt, tabId) {
+  var container = evt.target.closest('.solution-tabs');
+  container.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+  container.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById(tabId).classList.add('active');
+  evt.currentTarget.classList.add('active');
+}
+
+// ============================
+// HINTS
+// ============================
+function toggleHint(id) {
+  document.getElementById(id).classList.toggle('active');
+}
+
+// ============================
+// TIMER
+// ============================
+function startTimer(id) {
+  if (timers[id]) { clearInterval(timers[id].interval); }
+  var el = document.getElementById(id);
+  var start = Date.now();
+  timers[id] = { interval: setInterval(function() {
+    var s = Math.floor((Date.now() - start) / 1000);
+    var m = Math.floor(s / 60);
+    s = s % 60;
+    el.textContent = '⏱ ' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }, 1000) };
+}
+
+// ============================
+// ANSWER CHECKER
+// ============================
+function checkAnswer(inputId, correct, fbId) {
+  var val = parseInt(document.getElementById(inputId).value);
+  var fb = document.getElementById(fbId);
+  fb.className = 'answer-feedback';
+  if (val === correct) {
+    fb.textContent = '✓ Correto!';
+    fb.classList.add('correct');
+    miniConfetti(fb);
+  } else {
+    fb.textContent = '✗ Tente novamente...';
+    fb.classList.add('wrong');
+    document.getElementById(inputId).style.animation = 'shake 0.4s';
+    setTimeout(function(){ document.getElementById(inputId).style.animation = ''; }, 500);
+  }
+}
+
+// ============================
+// TEACHER MODE
+// ============================
+function toggleTeacherMode() {
+  document.body.classList.toggle('teacher-mode');
+  document.getElementById('teacherToggle').classList.toggle('active');
+}
+
+// ============================
+// CHESS BOARD (Interactive Domino)
+// ============================
+(function() {
+  var board = document.getElementById('chessBoard');
+  boardCells = [];
+  for (var r = 0; r < 8; r++) {
+    boardCells[r] = [];
+    for (var c = 0; c < 8; c++) {
+      var cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.dataset.r = r; cell.dataset.c = c;
+      if ((r === 0 && c === 0) || (r === 7 && c === 7)) {
+        cell.classList.add('cell-removed');
+        cell.dataset.removed = '1';
+      } else if ((r + c) % 2 === 0) {
+        cell.classList.add('cell-light');
+      } else {
+        cell.classList.add('cell-dark');
+      }
+      cell.addEventListener('click', boardCellClick);
+      board.appendChild(cell);
+      boardCells[r][c] = cell;
+    }
+  }
+})();
+
+function boardCellClick(e) {
+  var r = parseInt(e.target.dataset.r);
+  var c = parseInt(e.target.dataset.c);
+  if (e.target.dataset.removed || e.target.dataset.filled) return;
+
+  if (boardSelected === null) {
+    boardSelected = {r: r, c: c, el: e.target};
+    e.target.style.outline = '2px solid var(--accent-gold)';
+  } else {
+    var dr = Math.abs(boardSelected.r - r);
+    var dc = Math.abs(boardSelected.c - c);
+    if ((dr === 1 && dc === 0) || (dr === 0 && dc === 1)) {
+      if (!boardCells[r][c].dataset.filled) {
+        boardSelected.el.classList.add('cell-domino-a');
+        boardSelected.el.dataset.filled = '1';
+        e.target.classList.add('cell-domino-b');
+        e.target.dataset.filled = '1';
+        boardDominoes++;
+        document.getElementById('boardStatus').innerHTML =
+          'Peças colocadas: <strong>' + boardDominoes + '</strong>/31' +
+          (boardDominoes >= 29 ? ' — Ficando difícil, não?' : '');
+      }
+    }
+    boardSelected.el.style.outline = '';
+    boardSelected = null;
+  }
+}
+
+function resetBoard() {
+  boardDominoes = 0;
+  boardSelected = null;
+  for (var r = 0; r < 8; r++) {
+    for (var c = 0; c < 8; c++) {
+      var cell = boardCells[r][c];
+      cell.classList.remove('cell-domino-a', 'cell-domino-b');
+      delete cell.dataset.filled;
+      cell.style.outline = '';
+    }
+  }
+  document.getElementById('boardStatus').innerHTML = 'Clique em casas adjacentes para colocar dominós. Peças colocadas: <strong>0</strong>/31';
+}
+
+// ============================
+// CHOCOLATE GRID
+// ============================
+(function() {
+  var grid = document.getElementById('chocoGrid');
+  for (var i = 0; i < 60; i++) {
+    var cell = document.createElement('div');
+    cell.className = 'choco-cell';
+    grid.appendChild(cell);
+  }
+})();
+
+// ============================
+// 9 DOTS CANVAS
+// ============================
+(function() {
+  var canvas = document.getElementById('dotsCanvas');
+  var ctx = canvas.getContext('2d');
+  var gap = 80, pad = 60;
+
+  // Draw dots
+  function drawDots() {
+    ctx.clearRect(0, 0, 280, 280);
+    // Grid lines (subtle)
+    ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+    for (var i = 0; i < 3; i++) {
+      ctx.beginPath();
+      ctx.moveTo(pad + i*gap, pad); ctx.lineTo(pad + i*gap, pad + 2*gap);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(pad, pad + i*gap); ctx.lineTo(pad + 2*gap, pad + i*gap);
+      ctx.stroke();
+    }
+    // Dots
+    for (var r = 0; r < 3; r++) {
+      for (var c = 0; c < 3; c++) {
+        ctx.beginPath();
+        ctx.arc(pad + c*gap, pad + r*gap, 8, 0, Math.PI*2);
+        ctx.fillStyle = '#f0c040';
+        ctx.fill();
+      }
+    }
+    // Lines
+    ctx.strokeStyle = '#4fc3f7'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+    for (var i = 0; i < dotsLines.length; i++) {
+      var l = dotsLines[i];
+      ctx.beginPath();
+      ctx.moveTo(l.x1, l.y1); ctx.lineTo(l.x2, l.y2);
+      ctx.stroke();
+    }
+    // Hit points
+    for (var i = 0; i < dotsHitPoints.length; i++) {
+      ctx.beginPath();
+      ctx.arc(dotsHitPoints[i].x, dotsHitPoints[i].y, 5, 0, Math.PI*2);
+      ctx.fillStyle = '#66bb6a'; ctx.fill();
+    }
+  }
+  drawDots();
+  window._drawDots = drawDots;
+  window._dotsGap = gap;
+  window._dotsPad = pad;
+
+  canvas.addEventListener('click', function(e) {
+    var rect = canvas.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
+
+    if (dotsLastPoint === null) {
+      dotsLastPoint = {x: x, y: y};
+    } else {
+      if (dotsLines.length < 4) {
+        dotsLines.push({x1: dotsLastPoint.x, y1: dotsLastPoint.y, x2: x, y2: y});
+        // Check which dots this line hits
+        for (var r = 0; r < 3; r++) {
+          for (var c = 0; c < 3; c++) {
+            var dx = pad + c*gap, dy = pad + r*gap;
+            if (pointToSegDist(dx, dy, dotsLastPoint.x, dotsLastPoint.y, x, y) < 12) {
+              var already = dotsHitPoints.some(function(p){ return p.x===dx && p.y===dy; });
+              if (!already) dotsHitPoints.push({x: dx, y: dy});
+            }
+          }
+        }
+        dotsLastPoint = {x: x, y: y};
+        drawDots();
+        document.getElementById('dotsStatus').innerHTML =
+          'Linhas: <strong>' + dotsLines.length + '</strong>/4 — Pontos: <strong>' + dotsHitPoints.length + '</strong>/9';
+        if (dotsHitPoints.length === 9) {
+          document.getElementById('dotsStatus').innerHTML += ' — <span style="color:var(--accent-green)">PARABÉNS!</span>';
+          miniConfetti(canvas);
+        }
+      }
+    }
+  });
+})();
+
+function pointToSegDist(px, py, x1, y1, x2, y2) {
+  var dx = x2-x1, dy = y2-y1;
+  var len2 = dx*dx + dy*dy;
+  if (len2 === 0) return Math.sqrt((px-x1)*(px-x1)+(py-y1)*(py-y1));
+  var t = Math.max(0, Math.min(1, ((px-x1)*dx+(py-y1)*dy)/len2));
+  var projX = x1 + t*dx, projY = y1 + t*dy;
+  return Math.sqrt((px-projX)*(px-projX)+(py-projY)*(py-projY));
+}
+
+function resetDots() {
+  dotsLines = []; dotsHitPoints = []; dotsLastPoint = null;
+  window._drawDots();
+  document.getElementById('dotsStatus').innerHTML = 'Linhas: <strong>0</strong>/4 — Pontos: <strong>0</strong>/9';
+}
+
+function showDotsSolution() {
+  dotsLines = []; dotsHitPoints = []; dotsLastPoint = null;
+  var p = window._dotsPad, g = window._dotsGap;
+  // Classic solution: start bottom-left, go up, diagonal down-right beyond grid, left, diagonal up-right
+  dotsLines.push({x1:p, y1:p+2*g, x2:p, y2:p}); // up left column
+  dotsLines.push({x1:p, y1:p, x2:p+2*g+g*0.5, y2:p+2*g+g*0.5}); // diagonal beyond
+  dotsLines.push({x1:p+2*g+g*0.5, y1:p+2*g+g*0.5, x2:p+g, y2:p}); // back up to middle-top
+  dotsLines.push({x1:p+g, y1:p, x2:p+2*g, y2:p+2*g}); // diagonal down
+  // Calculate hits
+  dotsHitPoints = [];
+  for (var r = 0; r < 3; r++) {
+    for (var c = 0; c < 3; c++) {
+      var dx = p + c*g, dy = p + r*g;
+      for (var i = 0; i < dotsLines.length; i++) {
+        var l = dotsLines[i];
+        if (pointToSegDist(dx, dy, l.x1, l.y1, l.x2, l.y2) < 12) {
+          var already = dotsHitPoints.some(function(pt){ return pt.x===dx && pt.y===dy; });
+          if (!already) dotsHitPoints.push({x: dx, y: dy});
+          break;
+        }
+      }
+    }
+  }
+  window._drawDots();
+  document.getElementById('dotsStatus').innerHTML =
+    'Linhas: <strong>4</strong>/4 — Pontos: <strong>' + dotsHitPoints.length + '</strong>/9 — <span style="color:var(--accent-gold)">Solução revelada!</span>';
+}
+
+// ============================
+// MONTY HALL GAME
+// ============================
+function montyReset() {
+  montyPhase = 'choose';
+  montyCarDoor = Math.floor(Math.random() * 3);
+  montyPlayerChoice = -1;
+  montyOpenedDoor = -1;
+  var doors = document.querySelectorAll('#doorsContainer .door');
+  doors.forEach(function(d) {
+    d.className = 'door';
+    d.querySelector('.door-content').innerHTML = '';
+    d.querySelector('.door-content').style.display = 'none';
+  });
+  document.getElementById('montyActions').style.display = 'none';
+  document.getElementById('montyResult').style.display = 'none';
+  document.getElementById('montyInstructions').textContent = 'Escolha uma porta clicando nela:';
+}
+
+function montyChoose(doorIdx) {
+  if (montyPhase !== 'choose') return;
+  montyPlayerChoice = doorIdx;
+  montyPhase = 'reveal';
+
+  // Host opens a door with a goat (not the player's choice, not the car)
+  var options = [0,1,2].filter(function(d) { return d !== montyPlayerChoice && d !== montyCarDoor; });
+  montyOpenedDoor = options[Math.floor(Math.random() * options.length)];
+
+  var doors = document.querySelectorAll('#doorsContainer .door');
+  doors[montyPlayerChoice].style.borderColor = 'var(--accent-blue)';
+  doors[montyOpenedDoor].classList.add('opened');
+  doors[montyOpenedDoor].querySelector('.door-content').innerHTML = '🐐<br><span style="font-size:0.7rem;color:var(--text-muted)">Cabra!</span>';
+  doors[montyOpenedDoor].querySelector('.door-content').style.display = 'flex';
+
+  document.getElementById('montyInstructions').textContent = 'O apresentador abriu a porta ' + (montyOpenedDoor+1) + '. Quer trocar?';
+  document.getElementById('montyActions').style.display = 'block';
+}
+
+function montyDecide(switchDoor) {
+  if (montyPhase !== 'reveal') return;
+  montyPhase = 'done';
+
+  var finalChoice = switchDoor
+    ? [0,1,2].filter(function(d){ return d !== montyPlayerChoice && d !== montyOpenedDoor; })[0]
+    : montyPlayerChoice;
+
+  var won = (finalChoice === montyCarDoor);
+
+  // Update stats
+  if (switchDoor) { montyData.switchTotal++; if (won) montyData.switchWins++; }
+  else { montyData.stayTotal++; if (won) montyData.stayWins++; }
+
+  // Reveal all doors
+  var doors = document.querySelectorAll('#doorsContainer .door');
+  for (var i = 0; i < 3; i++) {
+    doors[i].classList.add('opened');
+    if (i === montyCarDoor) {
+      doors[i].querySelector('.door-content').innerHTML = '🚗<br><span style="font-size:0.7rem;color:var(--accent-green)">Carro!</span>';
+      doors[i].classList.add('winner');
+    } else if (i !== montyOpenedDoor) {
+      doors[i].querySelector('.door-content').innerHTML = '🐐<br><span style="font-size:0.7rem;color:var(--text-muted)">Cabra</span>';
+    }
+    doors[i].querySelector('.door-content').style.display = 'flex';
+  }
+
+  var resultEl = document.getElementById('montyResult');
+  resultEl.style.display = 'block';
+  resultEl.innerHTML = won
+    ? '<span style="color:var(--accent-green);">🎉 Você GANHOU ' + (switchDoor ? 'trocando' : 'mantendo') + '!</span>'
+    : '<span style="color:var(--accent-red);">😔 Você PERDEU ' + (switchDoor ? 'trocando' : 'mantendo') + '.</span>';
+
+  document.getElementById('montyActions').style.display = 'none';
+  document.getElementById('montyStats').style.display = 'flex';
+
+  var swPct = montyData.switchTotal ? Math.round(montyData.switchWins/montyData.switchTotal*100) : 0;
+  var stPct = montyData.stayTotal ? Math.round(montyData.stayWins/montyData.stayTotal*100) : 0;
+  document.getElementById('statSwitch').textContent = montyData.switchWins + '/' + montyData.switchTotal + ' (' + swPct + '%)';
+  document.getElementById('statStay').textContent = montyData.stayWins + '/' + montyData.stayTotal + ' (' + stPct + '%)';
+
+  if (won) miniConfetti(resultEl);
+}
+
+function montySimulate(n) {
+  for (var i = 0; i < n; i++) {
+    var car = Math.floor(Math.random()*3);
+    var choice = Math.floor(Math.random()*3);
+    // Switch: always switch
+    var opened = [0,1,2].filter(function(d){ return d!==choice && d!==car; });
+    opened = opened[Math.floor(Math.random()*opened.length)];
+    var switchChoice = [0,1,2].filter(function(d){ return d!==choice && d!==opened; })[0];
+    montyData.switchTotal++; if (switchChoice === car) montyData.switchWins++;
+    montyData.stayTotal++; if (choice === car) montyData.stayWins++;
+  }
+  document.getElementById('montyStats').style.display = 'flex';
+  var swPct = Math.round(montyData.switchWins/montyData.switchTotal*100);
+  var stPct = Math.round(montyData.stayWins/montyData.stayTotal*100);
+  document.getElementById('statSwitch').textContent = montyData.switchWins + '/' + montyData.switchTotal + ' (' + swPct + '%)';
+  document.getElementById('statStay').textContent = montyData.stayWins + '/' + montyData.stayTotal + ' (' + stPct + '%)';
+  document.getElementById('montyResult').style.display = 'block';
+  document.getElementById('montyResult').innerHTML = '<span style="color:var(--accent-blue);">⚡ Simulação de ' + n + ' rodadas concluída! Compare as percentagens.</span>';
+}
+
+montyReset();
+
+// ============================
+// CHAMELEON SIMULATOR
+// ============================
+function chamEncounter(type) {
+  var s = chamState;
+  if (type === 'CM' && s.C > 0 && s.M > 0) { s.C--; s.M--; s.V += 2; }
+  else if (type === 'CV' && s.C > 0 && s.V > 0) { s.C--; s.V--; s.M += 2; }
+  else if (type === 'MV' && s.M > 0 && s.V > 0) { s.M--; s.V--; s.C += 2; }
+  else return;
+  chamUpdate();
+}
+
+function chamReset() {
+  chamState = {C: 13, M: 15, V: 17};
+  chamUpdate();
+}
+
+function chamUpdate() {
+  document.getElementById('chamC').textContent = chamState.C;
+  document.getElementById('chamM').textContent = chamState.M;
+  document.getElementById('chamV').textContent = chamState.V;
+  var cm = ((chamState.C - chamState.M) % 3 + 3) % 3;
+  var cv = ((chamState.C - chamState.V) % 3 + 3) % 3;
+  var mv = ((chamState.M - chamState.V) % 3 + 3) % 3;
+  document.getElementById('chamModStatus').innerHTML =
+    'Diferenças mod 3: C−M ≡ <strong>' + cm + '</strong>, C−V ≡ <strong>' + cv + '</strong>, M−V ≡ <strong>' + mv + '</strong>' +
+    (cm === 1 && cv === 2 && mv === 1 ? ' <span style="color:var(--accent-green)">✓ Invariante preservado!</span>' : '');
+}
+
+// ============================
+// HOTEL INFINITE ANIMATION
+// ============================
+function hotelShift() {
+  var container = document.getElementById('hotelVisual');
+  container.innerHTML = '';
+  var newRoom = document.createElement('div');
+  newRoom.className = 'hotel-room new-guest'; newRoom.textContent = '★';
+  container.appendChild(newRoom);
+  for (var i = 1; i <= 10; i++) {
+    var room = document.createElement('div');
+    room.className = 'hotel-room occupied';
+    room.textContent = i; room.style.animationDelay = (i*0.05) + 's';
+    container.appendChild(room);
+  }
+  var dots = document.createElement('div');
+  dots.className = 'hotel-room dots'; dots.textContent = '...';
+  container.appendChild(dots);
+  var inf = document.createElement('div');
+  inf.className = 'hotel-room occupied'; inf.textContent = '∞';
+  container.appendChild(inf);
+}
+
+function hotelDouble() {
+  var container = document.getElementById('hotelVisual');
+  container.innerHTML = '';
+  for (var i = 1; i <= 10; i++) {
+    var room = document.createElement('div');
+    if (i % 2 === 0) {
+      room.className = 'hotel-room occupied';
+      room.textContent = i/2;
+    } else {
+      room.className = 'hotel-room freed';
+      room.textContent = '✓';
+    }
+    container.appendChild(room);
+  }
+  var dots = document.createElement('div');
+  dots.className = 'hotel-room dots'; dots.textContent = '...';
+  container.appendChild(dots);
+}
+
+function hotelReset() {
+  var container = document.getElementById('hotelVisual');
+  container.innerHTML = '';
+  for (var i = 1; i <= 10; i++) {
+    var room = document.createElement('div');
+    room.className = 'hotel-room occupied'; room.textContent = i;
+    container.appendChild(room);
+  }
+  var dots = document.createElement('div');
+  dots.className = 'hotel-room dots'; dots.textContent = '...';
+  container.appendChild(dots);
+  var inf = document.createElement('div');
+  inf.className = 'hotel-room occupied'; inf.textContent = '∞';
+  container.appendChild(inf);
+}
+
+// ============================
+// LANGUAGE SWITCHER (i18n)
+// ============================
+var i18n = {
+  pt: {
+    'hero-badge': 'Uma jornada interativa pela matemática',
+    'hero-title-1': 'A Arte da Descoberta:',
+    'hero-title-2': 'Do ',
+    'hero-title-3': ' ao Rigor Matemático',
+    'hero-subtitle': 'Quebra-cabeças que despertam a intuição criativa, resolvidos com o método rigoroso de quem sabe que toda grande prova começa com um lampejo de curiosidade.',
+    'author-puzzles': 'Os Enigmas',
+    'author-method': 'O Método',
+    'author-tactics': 'As Táticas',
+    'xp-label': 'Progresso da Jornada',
+    'nav-tools': 'Caixa de Ferramentas',
+    'nav-level1': 'Nível 1',
+    'nav-level2': 'Nível 2',
+    'nav-level3': 'Nível 3',
+    'nav-level4': 'Nível 4',
+    'teacher-btn': 'Professor',
+    'label-foundations': 'Fundamentos',
+    'intro-title': 'A Caixa de Ferramentas do Solucionador',
+    'intro-desc': 'Antes de enfrentar qualquer desafio, um bom detetive prepara seus instrumentos. Aqui, você vai conhecer a filosofia, o método e as táticas que transformam confusão em clareza.',
+    'footer-quote': '"Não tenha medo de testar ideias malucas. A heurística tem razões que a própria demonstração rigorosa desconhece — mas lembre-se sempre de fazer o Retrospecto no final."'
+  },
+  en: {
+    'hero-badge': 'An interactive journey through mathematics',
+    'hero-title-1': 'The Art of Discovery:',
+    'hero-title-2': 'From ',
+    'hero-title-3': ' to Mathematical Rigor',
+    'hero-subtitle': 'Puzzles that awaken creative intuition, solved with the rigorous method of those who know every great proof begins with a spark of curiosity.',
+    'author-puzzles': 'The Puzzles',
+    'author-method': 'The Method',
+    'author-tactics': 'The Tactics',
+    'xp-label': 'Journey Progress',
+    'nav-tools': 'Toolbox',
+    'nav-level1': 'Level 1',
+    'nav-level2': 'Level 2',
+    'nav-level3': 'Level 3',
+    'nav-level4': 'Level 4',
+    'teacher-btn': 'Teacher',
+    'label-foundations': 'Foundations',
+    'intro-title': 'The Problem Solver\'s Toolbox',
+    'intro-desc': 'Before facing any challenge, a good detective prepares their instruments. Here you will learn the philosophy, method and tactics that turn confusion into clarity.',
+    'footer-quote': '"Don\'t be afraid to test crazy ideas. Heuristics have reasons that rigorous proof itself ignores — but always remember to do the Retrospective at the end."'
+  },
+  es: {
+    'hero-badge': 'Un viaje interactivo por las matemáticas',
+    'hero-title-1': 'El Arte del Descubrimiento:',
+    'hero-title-2': 'Del ',
+    'hero-title-3': ' al Rigor Matemático',
+    'hero-subtitle': 'Rompecabezas que despiertan la intuición creativa, resueltos con el método riguroso de quien sabe que toda gran prueba comienza con un destello de curiosidad.',
+    'author-puzzles': 'Los Enigmas',
+    'author-method': 'El Método',
+    'author-tactics': 'Las Tácticas',
+    'xp-label': 'Progreso del Viaje',
+    'nav-tools': 'Caja de Herramientas',
+    'nav-level1': 'Nivel 1',
+    'nav-level2': 'Nivel 2',
+    'nav-level3': 'Nivel 3',
+    'nav-level4': 'Nivel 4',
+    'teacher-btn': 'Profesor',
+    'label-foundations': 'Fundamentos',
+    'intro-title': 'La Caja de Herramientas del Solucionador',
+    'intro-desc': 'Antes de enfrentar cualquier desafío, un buen detective prepara sus instrumentos. Aquí conocerás la filosofía, el método y las tácticas que transforman la confusión en claridad.',
+    'footer-quote': '"No tengas miedo de probar ideas locas. La heurística tiene razones que la propia demostración rigurosa desconoce — pero siempre recuerda hacer la Retrospectiva al final."'
+  }
+};
+
+function setLang(lang) {
+  document.querySelectorAll('.lang-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.querySelector('.lang-btn[onclick*="' + lang + '"]').classList.add('active');
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (i18n[lang] && i18n[lang][key]) {
+      el.textContent = i18n[lang][key];
+    }
+  });
+  document.documentElement.lang = lang === 'pt' ? 'pt-BR' : lang === 'es' ? 'es' : 'en';
+}
+
+// ============================
+// SMOOTH SCROLL
+// ============================
+document.querySelectorAll('.nav-sticky a').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    e.preventDefault();
+    var target = document.querySelector(this.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+</script>
+</body>
+</html>
